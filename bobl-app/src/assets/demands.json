@@ -1,0 +1,21 @@
+[{
+    "id": 1,
+    "src": "Garching",
+    "dst": "Neufinsing",
+    "direction": "oneway"
+}, {
+    "id": 2,
+    "src": "München",
+    "dst": "Berlin",
+    "direction": "oneway"
+}, {
+    "id": 3,
+    "src": "Stuttgart",
+    "dst": "München",
+    "direction": "roundtrip"
+}, {
+    "id": 4,
+    "src": "Ismaning",
+    "dst": "Unterföhring",
+    "direction": "oneway"
+}]

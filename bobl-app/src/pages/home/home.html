@@ -6,10 +6,13 @@
 
 <ion-content padding>
   <h2>Willkommen zu BOBL!</h2>
-  <p>
-    Legen sie jetzt ihren ersten Bedarf an.
-  </p>
-  <p>
-    TODO link einfügen
-  </p>
+  <ion-list>
+    <ion-item *ngFor="let demand of demands">
+      {{demand.src}}
+      <ion-icon *ngIf="demand.direction=='oneway'" name="arrow-round-forward"></ion-icon>
+      <ion-icon *ngIf="demand.direction=='roundtrip'" name="swap"></ion-icon>
+      {{demand.dst}}
+
+    </ion-item>
+  </ion-list>
 </ion-content>
