@@ -1,0 +1,2 @@
+map.addLayer(new ol.layer.Vector({source: new ol.source.Vector({url: "route-time-0-line-0.gpx",format: new ol.format.GPX() }), style: function(feature) { return style[feature.getGeometry().getType()] } }));
+map.addLayer(new ol.layer.Vector({source: new ol.source.Vector({url: "route-time-0-line-1.gpx",format: new ol.format.GPX() }), style: new ol.style.Style({stroke: new ol.style.Stroke({   color: '#f00', width: 3   }) }) }));
