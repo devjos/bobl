@@ -6,6 +6,8 @@ from ClusterTools import BusLineClustering,BusStopClustering,TimeClustering
 from datetime import datetime
 from OSM import routeToGpx
 from TSM import perform_tsm
+import os
+import json
 
 def runAlgorithm():
     # load data
@@ -40,11 +42,20 @@ def runAlgorithm():
 
         final_routes = [[] for _ in range(len(separated_lines))]
 
+        output_files = []
+
         for bl_i_i,bl_i in enumerate(bl_c.getClasses()):
             submatrix = matrix[np.ix_(bl_i,bl_i)]
             route = [int(i_stop) for i_stop in perform_tsm(bl_i,submatrix).split(" -> ")]
             final_route = [bs_ctrs[n] for n in route]
             final_routes.append(final_route)
 
-            with open("output/route-time-{}-line-{}.gpx".format(t_i,bl_i_i),"w") as f:
+            gpx_path = "route-time-{}-line-{}.gpx".format(t_i,bl_i_i)
+            output_files.append(gpx_path)
+            with open(os.path.join("output",gpx_path),"w") as f:
                 f.write(routeToGpx(final_route))
+
+        # write bus stops information
+        with open("output/route-time-{}-meta.json".format(t_i),"w") as f:
+            output_str = json.dumps({"routes":output_files,"stops":[[x[1],x[0]] for x in bs_ctrs]})
+            f.write(output_str)
