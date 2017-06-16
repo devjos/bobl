@@ -1,0 +1,103 @@
+<?xml version='1.0'?>
+<gpx version='1.1' creator='pyroute' xmlns='http://www.topografix.com/GPX/1/1' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd'>
+ <trk>
+  <name>Node 0</name>
+  <trkseg>
+   <trkpt lat='48.135400' lon='11.588105'>
+   </trkpt>
+   <trkpt lat='48.135201' lon='11.587936'>
+   </trkpt>
+   <trkpt lat='48.135011' lon='11.587764'>
+   </trkpt>
+   <trkpt lat='48.134667' lon='11.587451'>
+   </trkpt>
+   <trkpt lat='48.134257' lon='11.587051'>
+   </trkpt>
+   <trkpt lat='48.133544' lon='11.586308'>
+   </trkpt>
+   <trkpt lat='48.133260' lon='11.586004'>
+   </trkpt>
+   <trkpt lat='48.132987' lon='11.585672'>
+   </trkpt>
+   <trkpt lat='48.132630' lon='11.585243'>
+   </trkpt>
+   <trkpt lat='48.132430' lon='11.585011'>
+   </trkpt>
+   <trkpt lat='48.132369' lon='11.584943'>
+   </trkpt>
+   <trkpt lat='48.132433' lon='11.584807'>
+   </trkpt>
+   <trkpt lat='48.132457' lon='11.584758'>
+   </trkpt>
+   <trkpt lat='48.132946' lon='11.583781'>
+   </trkpt>
+   <trkpt lat='48.132984' lon='11.583705'>
+   </trkpt>
+   <trkpt lat='48.133048' lon='11.583615'>
+   </trkpt>
+  </trkseg>
+  </trk>
+ <trk>
+  <name>Node 1</name>
+  <trkseg>
+   <trkpt lat='48.133048' lon='11.583615'>
+   </trkpt>
+   <trkpt lat='48.133098' lon='11.583557'>
+   </trkpt>
+   <trkpt lat='48.133239' lon='11.583442'>
+   </trkpt>
+   <trkpt lat='48.133674' lon='11.583115'>
+   </trkpt>
+   <trkpt lat='48.133839' lon='11.582980'>
+   </trkpt>
+   <trkpt lat='48.133891' lon='11.582939'>
+   </trkpt>
+   <trkpt lat='48.133915' lon='11.582919'>
+   </trkpt>
+   <trkpt lat='48.133927' lon='11.582910'>
+   </trkpt>
+   <trkpt lat='48.133943' lon='11.582955'>
+   </trkpt>
+   <trkpt lat='48.133954' lon='11.582991'>
+   </trkpt>
+   <trkpt lat='48.133986' lon='11.583088'>
+   </trkpt>
+   <trkpt lat='48.134027' lon='11.583219'>
+   </trkpt>
+   <trkpt lat='48.134057' lon='11.583323'>
+   </trkpt>
+   <trkpt lat='48.134070' lon='11.583390'>
+   </trkpt>
+   <trkpt lat='48.134084' lon='11.583470'>
+   </trkpt>
+   <trkpt lat='48.134127' lon='11.583759'>
+   </trkpt>
+   <trkpt lat='48.134323' lon='11.585068'>
+   </trkpt>
+   <trkpt lat='48.134354' lon='11.585271'>
+   </trkpt>
+   <trkpt lat='48.134446' lon='11.585890'>
+   </trkpt>
+   <trkpt lat='48.134458' lon='11.585959'>
+   </trkpt>
+   <trkpt lat='48.134484' lon='11.586035'>
+   </trkpt>
+   <trkpt lat='48.134513' lon='11.586089'>
+   </trkpt>
+   <trkpt lat='48.134508' lon='11.586102'>
+   </trkpt>
+   <trkpt lat='48.134489' lon='11.586158'>
+   </trkpt>
+   <trkpt lat='48.134257' lon='11.587051'>
+   </trkpt>
+   <trkpt lat='48.134667' lon='11.587451'>
+   </trkpt>
+   <trkpt lat='48.135011' lon='11.587764'>
+   </trkpt>
+   <trkpt lat='48.135201' lon='11.587936'>
+   </trkpt>
+   <trkpt lat='48.135400' lon='11.588105'>
+   </trkpt>
+  </trkseg>
+  </trk>
+</gpx>

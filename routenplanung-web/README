@@ -1,0 +1,5 @@
+Put this directory into the webroot of your server!
+
+Or do this:
+Execute: python -m SimpleHTTPServer
+Open Browser -> http://localhost:8000/test.html
