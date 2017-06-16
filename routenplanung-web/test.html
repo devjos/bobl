@@ -382,13 +382,16 @@
     });
 
     $('#n_timesplits').on('slide', function (slideEvt) {
-        handleConfigRequest(false)
+        handleConfigRequest(false);
     });
     $('#n_stops').on('slide', function (slideEvt) {
-        handleConfigRequest(false)
+        handleConfigRequest(false);
     });
     $('#n_lines').on('slide', function (slideEvt) {
-        handleConfigRequest(false)
+        handleConfigRequest(false);
+    });
+    $('#day_of_week').on('change', function () {
+        handleConfigRequest(false);
     });
 </script>
 
