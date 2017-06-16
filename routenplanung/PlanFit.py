@@ -9,26 +9,29 @@ from TSM import perform_tsm
 import os
 import json
 
-def runAlgorithm():
+def runAlgorithm(day,c_time,c_stop,c_lines):
     # load data
     my_data_indices = range(len(getData()))
 
     # cluster by time
-    t_c = TimeClustering(indices=my_data_indices,n_clusters=1)
+    t_c = TimeClustering(indices=my_data_indices,n_clusters=c_time)
     t_c.run_clustering()
     #print(list(map(lambda x: datetime.fromtimestamp(x).strftime("%Y-%m-%d %H:%M"), t_c.getCenters())))
+
+    output_files_json = []
+
 
     # now for every time cluster -> find bus stops
     for t_i,t in enumerate(t_c.getClasses()):
         # t = [indices to getData()]
-        bs_c = BusStopClustering(t,n_clusters=6)
+        bs_c = BusStopClustering(t,n_clusters=c_stop)
         bs_c.run_clustering()
 
         bs_ctrs = bs_c.getCenters()
         matrix = computeWeightMatrix(bs_ctrs)
 
         # now cluster bus stops into 2 lines (Expectation Optimization)
-        bl_c = BusLineClustering(stops=bs_ctrs,n_clusters=2)
+        bl_c = BusLineClustering(stops=bs_ctrs,n_clusters=c_lines)
         bl_c.run_clustering()
 
         # compute connectivity stops
@@ -42,20 +45,26 @@ def runAlgorithm():
 
         final_routes = [[] for _ in range(len(separated_lines))]
 
-        output_files = []
+        output_files_gpx = []
 
         for bl_i_i,bl_i in enumerate(bl_c.getClasses()):
             submatrix = matrix[np.ix_(bl_i,bl_i)]
             route = [int(i_stop) for i_stop in perform_tsm(bl_i,submatrix).split(" -> ")]
+
             final_route = [bs_ctrs[n] for n in route]
             final_routes.append(final_route)
 
-            gpx_path = "route-time-{}-line-{}.gpx".format(t_i,bl_i_i)
-            output_files.append(gpx_path)
+            gpx_path = "day-{}-ntime-{}-nstop-{}-nlines-{}-time-{}-bl-{}.gpx".format(day,c_time,c_stop,c_lines,t_i,bl_i_i)
+            output_files_gpx.append(gpx_path)
             with open(os.path.join("output",gpx_path),"w") as f:
                 f.write(routeToGpx(final_route))
 
         # write bus stops information
-        with open("output/route-time-{}-meta.json".format(t_i),"w") as f:
-            output_str = json.dumps({"routes":output_files,"stops":[[x[1],x[0]] for x in bs_ctrs]})
+        timefile = "day-{}-ntime-{}-nstop-{}-nlines-{}-time-{}.json".format(day,c_time,c_stop,c_lines,t_i)
+        output_files_json.append(timefile)
+        with open(os.path.join("output",timefile),"w") as f:
+            output_str = json.dumps({"routes":output_files_gpx,"stops":[[x[1],x[0]] for x in bs_ctrs]})
             f.write(output_str)
+    dayfile = "day-{}-ntime-{}-nstop-{}-nlines-{}-meta.json".format(day,c_time,c_stop,c_lines)
+    with open(os.path.join("output",dayfile),"w") as f:
+        json.dump({"timeAndPlan":list(zip([datetime.fromtimestamp(x).strftime("%H:%M") for x in t_c.getCenters()],output_files_json))},f)

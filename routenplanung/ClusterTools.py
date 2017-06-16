@@ -1,3 +1,4 @@
+from numba import jit
 from sklearn.cluster import KMeans
 import numpy as np
 import utm
@@ -126,6 +127,7 @@ class BusLineClustering(object):
         conv_short = lambda c: convertUTMCoordsToLatLon(c[0], c[1])
         latlon_centers = list(map(conv_short,ctrs))
         return latlon_centers
+
 
 def computeWeightMatrix(coordsLatLon,undirected=True):
     my_coords = []

@@ -1,23 +1,29 @@
+from numba import jit
+
 from pyroutelib2.loadOsm import LoadOsm
 from pyroutelib2.route import Router
 
+@jit(locals=locals())
 def getGPXRouteFromTo(lat1, lon1, lat2, lon2):
     data = LoadOsm('car')
     node1 = data.findNode(lat1, lon1)
     node2 = data.findNode(lat2, lon2)
 
+    if lat1 == lat2 and lon1 == lon2:
+        return [str(node1),str(node1)],0
+
     router = Router(data)
     result, route = router.doRoute(node1, node2)
 
     if result != 'success':
-        return
+        return [str(node1)],0
 
     distance_all = 0
     for i in range(len(route) - 1):
         distance_all += router.haversine(route[i], route[i + 1])
 
     return route, distance_all
-
+@jit
 def routeToGpx(list_nodes):
     """Format a route (as list of nodes) into a GPX file"""
     output = ''
@@ -28,20 +34,23 @@ def routeToGpx(list_nodes):
         output = output + " <trk>\n"
         output = output + "  <name>%s</name>\n" % ("Node "+str(i))
         output = output + "  <trkseg>\n"
+
         data = LoadOsm('car')
         router = Router(data)
         n_from = data.findNode(list_nodes[i][0],list_nodes[i][1])
         n_to = data.findNode(list_nodes[i+1][0],list_nodes[i+1][1])
-        result, route = router.doRoute(n_from, n_to)
+        if n_from != n_to:
 
-        count = 0
-        for i in route:
-            node = data.rnodes[i]
-            output = output + "   <trkpt lat='%f' lon='%f'>\n" % (
-                node[0],
-                node[1])
-            output = output + "   </trkpt>\n"
-            count = count + 1
+            result, route = router.doRoute(n_from, n_to)
+
+            count = 0
+            for i in route:
+                node = data.rnodes[i]
+                output = output + "   <trkpt lat='%f' lon='%f'>\n" % (
+                    node[0],
+                    node[1])
+                output = output + "   </trkpt>\n"
+                count = count + 1
         output = output + "  </trkseg>\n  </trk>\n"
     output = output + "</gpx>\n"
 
