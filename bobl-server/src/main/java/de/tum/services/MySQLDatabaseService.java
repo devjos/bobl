@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
 
+import javax.security.auth.login.FailedLoginException;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -88,9 +90,9 @@ public class MySQLDatabaseService implements DatabaseService, Closeable {
 
 
   @Override
-  public SessionToken newSession(Credentials creds) {
+  public SessionToken newSession(Credentials creds) throws FailedLoginException {
     // TODO generate session token and save in DB
-    return new SessionToken("accessFooBar");
+    return new SessionToken("user", "accessFooBar");
   }
 
 
@@ -115,6 +117,22 @@ public class MySQLDatabaseService implements DatabaseService, Closeable {
       } catch (SQLException e) {
         log.error("Could not close stmt.", e);
       }
+  }
+
+
+
+  @Override
+  public void authenticate(Credentials creds) throws FailedLoginException {
+    // TODO Auto-generated method stub
+
+  }
+
+
+
+  @Override
+  public void verifySession(SessionToken token) throws FailedLoginException {
+    // TODO Auto-generated method stub
+
   }
 
 }

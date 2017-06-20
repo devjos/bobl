@@ -1,5 +1,6 @@
 package de.tum.resource;
 
+import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -14,6 +15,7 @@ import de.tum.model.DatabaseService;
  * Session resource.
  */
 @Path("signup")
+@PermitAll
 public class SignupResource {
 
   @Inject

@@ -17,6 +17,7 @@ import org.junit.Test;
 import com.google.gson.Gson;
 
 import de.tum.model.Demand;
+import de.tum.model.SessionToken;
 import de.tum.services.MySQLDatabaseService;
 
 public class DemandResourceTest {
@@ -47,8 +48,10 @@ public class DemandResourceTest {
   @Test
   public void test() {
     Demand d = new Demand();
+    SessionToken token = new SessionToken("user", "accessFooBar");
 
-    Response response = target.path("demand").request().post(Entity.json(new Gson().toJson(d)));
+    Response response = target.path("demand").request().cookie(token.toCookie())
+        .post(Entity.json(new Gson().toJson(d)));
     assertEquals(204, response.getStatus());
 
   }

@@ -19,6 +19,8 @@ public class DemandResource {
   @Inject
   private DatabaseService db;
 
+
+
   /**
    * Upload a new demand.
    */

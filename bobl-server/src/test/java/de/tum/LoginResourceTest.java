@@ -1,12 +1,15 @@
 package de.tum;
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -53,8 +56,12 @@ public class LoginResourceTest {
     Credentials creds = new Credentials("user", "password");
     Response response = target.path("login").request()
         .post(Entity.entity(new Gson().toJson(creds), MediaType.APPLICATION_JSON));
-    String entity = response.readEntity(String.class);
-    SessionToken token = new Gson().fromJson(entity, SessionToken.class);
+    assertEquals(200, response.getStatus());
+
+    Cookie c = response.getCookies().get("session");
+    assertNotNull(c);
+    SessionToken token = SessionToken.fromCookie(c);
     assertTrue(token.getToken().matches("[a-zA-Z0-9]+"));
+
   }
 }

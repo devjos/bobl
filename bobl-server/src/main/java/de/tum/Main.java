@@ -6,7 +6,10 @@ import java.net.URI;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 
+import de.tum.filters.AuthFilter;
+import de.tum.filters.LoggingFilter;
 import de.tum.model.DatabaseService;
 import de.tum.services.MySQLDatabaseService;
 
@@ -39,7 +42,13 @@ public class Main {
     // create a resource config that scans for JAX-RS resources and providers
     // in de.tum.in.net package
     final ResourceConfig rc = new ResourceConfig().register(new MyApplicationBinder(dbService))
-        .packages(true, "de.tum.resource");
+        .packages(true, "de.tum.resource").register(LoggingFilter.class).register(AuthFilter.class)
+        .register(RolesAllowedDynamicFeature.class);
+
+    rc.property("jersey.config.server.provider.packages",
+        "org.glassfish.jersey.filter;de.tum.filters.AuthFilter");
+    rc.property("javax.ws.rs.container.ContainerRequestFilter",
+        "org.glassfish.jersey.filter.LoggingFilter;de.tum.filters.AuthFilter");
 
 
     // create and start a new instance of grizzly http server
