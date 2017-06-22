@@ -4,15 +4,23 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h2>Willkommen zu BOBL!</h2>
-  <ion-list>
-    <ion-item *ngFor="let demand of demands">
+<ion-content class="card-background-page">
+
+  <ion-fab right bottom>
+    <button ion-fab><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+
+  <ion-card *ngFor="let demand of demands">
+    <img src="assets/img/testcardimg.jpg"/>
+    <div class="card-title"> {{demand.title}}</div>
+    <div class="card-subtitle">
       {{demand.src}}
       <ion-icon *ngIf="demand.direction=='oneway'" name="arrow-round-forward"></ion-icon>
       <ion-icon *ngIf="demand.direction=='roundtrip'" name="swap"></ion-icon>
       {{demand.dst}}
+    </div>
+  </ion-card>
 
-    </ion-item>
-  </ion-list>
 </ion-content>
+
+

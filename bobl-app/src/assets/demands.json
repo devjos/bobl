@@ -1,21 +1,30 @@
-[{
+[
+  {
     "id": 1,
     "src": "Garching",
     "dst": "Neufinsing",
-    "direction": "oneway"
-}, {
+    "direction": "oneway",
+    "title": "Termin"
+  },
+  {
     "id": 2,
     "src": "München",
     "dst": "Berlin",
-    "direction": "oneway"
-}, {
+    "direction": "oneway",
+    "title": "Ausflug"
+  },
+  {
     "id": 3,
     "src": "Stuttgart",
     "dst": "München",
-    "direction": "roundtrip"
-}, {
+    "direction": "roundtrip",
+    "title": "Mein Arbeitsweg"
+  },
+  {
     "id": 4,
     "src": "Ismaning",
     "dst": "Unterföhring",
-    "direction": "oneway"
-}]
+    "direction": "oneway",
+    "title": "Eltern besuchen"
+  }
+]
