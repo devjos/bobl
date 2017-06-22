@@ -1,13 +1,13 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Home</ion-title>
+    <ion-title>Ihre Bedarfsübersicht</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content class="card-background-page">
 
   <ion-fab right bottom>
-    <button ion-fab><ion-icon name="add"></ion-icon></button>
+    <button ion-fab (click)="pushPage()"><ion-icon name="add"></ion-icon></button>
   </ion-fab>
 
   <ion-card *ngFor="let demand of demands">

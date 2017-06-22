@@ -4,6 +4,8 @@ import { NavController } from 'ionic-angular';
 import { DemandsService } from '../../providers/demands.service';
 import { Demand } from '../../models/demand.model';
 
+import { AddPage } from '../add/add';
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -19,6 +21,10 @@ export class HomePage implements OnInit {
     this.demandsService.getDemands().subscribe(demands => {
       this.demands = demands;
     });
+  }
+
+  pushPage() {
+    this.navCtrl.push(AddPage);
   }
 
 }

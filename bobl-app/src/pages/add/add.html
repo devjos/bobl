@@ -1,11 +1,55 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Add 
+      Bedarf hinzufügen
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
+
+  <ion-list>
+
+    <ion-item>
+      <ion-label color="primary" floating>Von wo möchten Sie starten?</ion-label>
+      <ion-input type="text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="primary" floating>Wohin möchten Sie fahren?</ion-label>
+      <ion-input type="text"></ion-input>
+    </ion-item>
+
+    <ion-item-divider></ion-item-divider>
+
+    Fahrtzeiten
+
+    <ion-item>
+      <ion-label>Zeitraum</ion-label>
+      <ion-select [(ngModel)]="typeOfDemand">
+        <ion-option value="d">Dauerhaft</ion-option>
+        <ion-option value="z">Zeitraum</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-grid>
+      <ion-label>Wochentage</ion-label>
+        <ion-row>
+          <ion-checkbox [(ngModel)]="Mo"></ion-checkbox>
+          <ion-checkbox [(ngModel)]="Di"></ion-checkbox>
+          <ion-checkbox [(ngModel)]="Mi"></ion-checkbox>
+          <ion-checkbox [(ngModel)]="Do"></ion-checkbox>
+          <ion-checkbox [(ngModel)]="Fr"></ion-checkbox>
+          <ion-checkbox [(ngModel)]="Sa"></ion-checkbox>
+          <ion-checkbox [(ngModel)]="So"></ion-checkbox>
+        </ion-row>
+    </ion-grid>
+
+    <ion-item>
+      <ion-label>Gewünschte Ankunftszeit</ion-label>
+      <ion-datetime displayFormat="HH:mm" [(ngModel)]="myDate"></ion-datetime>
+    </ion-item>
+  </ion-list>
+
 
 </ion-content>
