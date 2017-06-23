@@ -1,11 +1,13 @@
-package de.tum.resource;
+package de.tum;
 
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
 
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.junit.After;
@@ -14,21 +16,18 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 
-import de.tum.Main;
-import de.tum.model.Credentials;
-import de.tum.services.MemoryDatabaseService;
+import de.tum.model.Demand;
+import de.tum.model.SessionToken;
+import de.tum.services.MySQLDatabaseService;
 
-public class SignupResourceTest {
+public class DemandResourceTest {
 
   private HttpServer server;
   private WebTarget target;
-  private MemoryDatabaseService db;
-
 
   @Before
   public void setUp() throws Exception {
-    db = new MemoryDatabaseService();
-    server = Main.startServer(db);
+    server = Main.startServer(new MySQLDatabaseService(false));
     Client c = ClientBuilder.newClient();
 
     // uncomment the following line if you want to enable
@@ -48,12 +47,12 @@ public class SignupResourceTest {
 
   @Test
   public void test() {
-    String response = target.path("signup").request().post(null, String.class);
+    Demand d = new Demand();
+    SessionToken token = new SessionToken("user", "accessFooBar");
 
-    Credentials creds = new Gson().fromJson(response, Credentials.class);
-    assertNotNull(creds);
-    assertNotNull(creds.getUser());
-    assertNotNull(creds.getPassword());
+    Response response = target.path("demand").request().cookie(token.toCookie())
+        .post(Entity.json(new Gson().toJson(d)));
+    assertEquals(204, response.getStatus());
 
   }
 }

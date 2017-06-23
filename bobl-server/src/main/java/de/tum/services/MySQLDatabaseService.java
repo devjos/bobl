@@ -32,7 +32,7 @@ public class MySQLDatabaseService implements DatabaseService, Closeable {
   private final String NEW_USER = "INSERT INTO User (password) VALUES (?)";
 
 
-  public MySQLDatabaseService() throws IOException {
+  public MySQLDatabaseService(boolean useFile) throws IOException {
 
     try {
       this.conn =
@@ -90,7 +90,7 @@ public class MySQLDatabaseService implements DatabaseService, Closeable {
 
 
   @Override
-  public SessionToken login(Credentials creds) throws FailedLoginException {
+  public SessionToken newSession(Credentials creds) throws FailedLoginException {
     // TODO generate session token and save in DB
     return new SessionToken("user", "accessFooBar");
   }
@@ -98,7 +98,7 @@ public class MySQLDatabaseService implements DatabaseService, Closeable {
 
 
   @Override
-  public void addDemand(String userID, Demand demand) {
+  public void addDemand(Demand demand) {
     // TODO Auto-generated method stub
   }
 
@@ -118,6 +118,16 @@ public class MySQLDatabaseService implements DatabaseService, Closeable {
         log.error("Could not close stmt.", e);
       }
   }
+
+
+
+  @Override
+  public void authenticate(Credentials creds) throws FailedLoginException {
+    // TODO Auto-generated method stub
+
+  }
+
+
 
   @Override
   public void verifySession(SessionToken token) throws FailedLoginException {

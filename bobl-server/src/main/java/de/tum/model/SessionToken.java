@@ -9,8 +9,6 @@ import org.apache.commons.codec.binary.Base64;
 
 import com.google.gson.Gson;
 
-import de.tum.util.RandomUtil;
-
 public class SessionToken {
 
   private String user;
@@ -18,7 +16,6 @@ public class SessionToken {
   private String expirationDate;
 
   public SessionToken(String user, String token) {
-    this.user = Objects.requireNonNull(user);
     this.token = Objects.requireNonNull(token);
     this.expirationDate = LocalDateTime.now().plusDays(30).toString();
   }
@@ -42,14 +39,6 @@ public class SessionToken {
   public static SessionToken fromCookie(Cookie c) {
     String val = new String(Base64.decodeBase64(c.getValue()));
     return new Gson().fromJson(val, SessionToken.class);
-  }
-
-  public static SessionToken generate(String user) {
-    return new SessionToken(user, RandomUtil.generate(12));
-  }
-
-  public boolean isExpired() {
-    return LocalDateTime.parse(expirationDate).isBefore(LocalDateTime.now());
   }
 
 }

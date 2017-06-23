@@ -1,4 +1,4 @@
-package de.tum.resource;
+package de.tum;
 
 
 import static org.junit.Assert.assertEquals;
@@ -20,22 +20,18 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 
-import de.tum.Main;
 import de.tum.model.Credentials;
-import de.tum.model.DatabaseService;
 import de.tum.model.SessionToken;
-import de.tum.services.MemoryDatabaseService;
+import de.tum.services.MySQLDatabaseService;
 
 public class LoginResourceTest {
 
   private HttpServer server;
   private WebTarget target;
-  private DatabaseService db;
 
   @Before
   public void setUp() throws Exception {
-    db = new MemoryDatabaseService();
-    server = Main.startServer(db);
+    server = Main.startServer(new MySQLDatabaseService(false));
     Client c = ClientBuilder.newClient();
 
     // uncomment the following line if you want to enable
@@ -57,8 +53,7 @@ public class LoginResourceTest {
    */
   @Test
   public void createNewSessionID() {
-    Credentials creds = db.newUser();
-
+    Credentials creds = new Credentials("user", "password");
     Response response = target.path("login").request()
         .post(Entity.entity(new Gson().toJson(creds), MediaType.APPLICATION_JSON));
     assertEquals(200, response.getStatus());
@@ -67,7 +62,6 @@ public class LoginResourceTest {
     assertNotNull(c);
     SessionToken token = SessionToken.fromCookie(c);
     assertTrue(token.getToken().matches("[a-zA-Z0-9]+"));
-    assertEquals(creds.getUser(), token.getUser());
 
   }
 }

@@ -30,7 +30,7 @@ public class Main {
    * @throws IOException
    */
   public static HttpServer startServer() throws IOException {
-    return startServer(new MySQLDatabaseService());
+    return startServer(new MySQLDatabaseService(true));
   }
 
   /**

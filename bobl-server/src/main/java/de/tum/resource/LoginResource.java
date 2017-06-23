@@ -6,11 +6,11 @@ import javax.security.auth.login.FailedLoginException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -49,10 +49,11 @@ public class LoginResource {
     }
 
     try {
-      SessionToken token = db.login(creds);
+      SessionToken token = db.newSession(creds);
+      String cookie = Base64.encodeBase64String(new Gson().toJson(token).getBytes());
 
-      Cookie c = token.toCookie();
-      return Response.ok().cookie(new NewCookie(c)).build();
+      NewCookie c = new NewCookie("session", cookie);
+      return Response.ok().cookie(c).build();
     } catch (FailedLoginException e) {
       log.debug("Login failed.", e);
       throw new WebApplicationException(Status.UNAUTHORIZED);
