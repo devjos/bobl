@@ -6,6 +6,7 @@ import java.util.Objects;
 import javax.ws.rs.core.Cookie;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import com.google.gson.Gson;
 
@@ -16,6 +17,10 @@ public class SessionToken {
   private String user;
   private String token;
   private String expirationDate;
+
+  public SessionToken(String user) {
+    this(user, DigestUtils.sha256Hex(RandomUtil.generate(20)));
+  }
 
   public SessionToken(String user, String token) {
     this.user = Objects.requireNonNull(user);

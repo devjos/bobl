@@ -16,13 +16,14 @@ import com.google.gson.Gson;
 
 import de.tum.Main;
 import de.tum.model.Credentials;
+import de.tum.model.DatabaseService;
 import de.tum.services.MemoryDatabaseService;
 
 public class SignupResourceTest {
 
   private HttpServer server;
   private WebTarget target;
-  private MemoryDatabaseService db;
+  private DatabaseService db;
 
 
   @Before
