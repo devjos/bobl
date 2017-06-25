@@ -70,4 +70,12 @@ public class LoginResourceTest {
     assertEquals(creds.getUser(), token.getUser());
 
   }
+
+
+  @Test
+  public void emptyRequest() {
+    Response response =
+        target.path("login").request().post(Entity.entity(null, MediaType.APPLICATION_JSON));
+    assertEquals(400, response.getStatus());
+  }
 }
