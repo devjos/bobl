@@ -60,7 +60,7 @@ public class MemoryDatabaseService implements DatabaseService {
 
   @Override
   public Collection<Demand> getDemands(String userID) {
-    throw new IllegalStateException("Not implemented yet.");
+    return demands.get(userID);
   }
 
   @Override
