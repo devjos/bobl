@@ -15,6 +15,7 @@ import org.junit.Test;
 import com.google.gson.Gson;
 
 import de.tum.Main;
+import de.tum.ServerConfig;
 import de.tum.model.Credentials;
 import de.tum.model.DatabaseService;
 import de.tum.services.MemoryDatabaseService;
@@ -29,7 +30,8 @@ public class SignupResourceTest {
   @Before
   public void setUp() throws Exception {
     db = new MemoryDatabaseService();
-    server = Main.startServer(db);
+    ServerConfig conf = ServerConfig.loadDefault();
+    server = Main.startServer(conf, db);
     Client c = ClientBuilder.newClient();
 
     // uncomment the following line if you want to enable
@@ -38,7 +40,7 @@ public class SignupResourceTest {
     // --
     // c.configuration().enable(new org.glassfish.jersey.media.json.JsonJaxbFeature());
 
-    target = c.target(Main.BASE_URI);
+    target = c.target(conf.getURI());
   }
 
   @After
