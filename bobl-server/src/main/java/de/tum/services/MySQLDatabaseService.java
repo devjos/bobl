@@ -167,9 +167,9 @@ public class MySQLDatabaseService implements DatabaseService, Closeable {
       stmt.setString(10, demand.getWaybackTime());
 
       StringBuilder builder = new StringBuilder();
-      boolean[] weekdays = demand.getWeekdays();
+      byte[] weekdays = demand.getWeekdays();
       for (int i = 0; i < weekdays.length; i++) {
-        builder = builder.append(weekdays[i] ? "1" : "0");
+        builder = builder.append(weekdays[i] == 1 ? "1" : "0");
       }
       stmt.setString(11, builder.toString());
 
@@ -209,7 +209,7 @@ public class MySQLDatabaseService implements DatabaseService, Closeable {
 
         int weekdaysInt = results.getInt(11);
         // parse weekdays
-        boolean[] weekdays = new boolean[7];
+        byte[] weekdays = new byte[7];
         for (byte i = 0; i < weekdays.length; i++) {
           weekdays[i] = getBit(weekdaysInt, 6 - i);
         }
@@ -229,8 +229,8 @@ public class MySQLDatabaseService implements DatabaseService, Closeable {
     return demandList;
   }
 
-  private boolean getBit(int number, int bit) {
-    return ((number >> bit) & 1) == 1;
+  private byte getBit(int number, int bit) {
+    return (byte) ((number >> bit) & 1);
   }
 
   private void close(Statement stmt) {

@@ -15,18 +15,18 @@ public class Demand {
   private final String outboundTime;
   private final String waybackTime; // optional
 
-  private final boolean[] weekdays;
+  private final byte[] weekdays;
 
   public Demand(String title, String source, String sourceLatitude, String sourceLongitude,
       String destination, String destinationLatitude, String destinationLongitude,
-      String outboundTime, boolean[] weekdays) {
+      String outboundTime, byte[] weekdays) {
     this(title, source, sourceLatitude, sourceLongitude, destination, destinationLatitude,
         destinationLongitude, outboundTime, null, weekdays);
   }
 
   public Demand(String title, String source, String sourceLatitude, String sourceLongitude,
       String destination, String destinationLatitude, String destinationLongitude,
-      String outboundTime, String waybackTime, boolean[] weekdays) {
+      String outboundTime, String waybackTime, byte[] weekdays) {
     this.title = title;
 
     this.source = source;
@@ -79,7 +79,7 @@ public class Demand {
     return waybackTime;
   }
 
-  public boolean[] getWeekdays() {
+  public byte[] getWeekdays() {
     return weekdays.clone();
   }
 
@@ -107,6 +107,11 @@ public class Demand {
 
     if (weekdays == null || weekdays.length != 7) {
       throw new IllegalStateException("Weekdays must not be null and must contain 7 elements.");
+    }
+    for (byte weekday : weekdays) {
+      if (weekday != 0 && weekday != 1) {
+        throw new IllegalStateException("Only {0, 1} are valid values for weekdays.");
+      }
     }
 
 
