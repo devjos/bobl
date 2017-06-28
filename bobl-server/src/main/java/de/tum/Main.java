@@ -27,7 +27,8 @@ public class Main {
    * @throws IOException
    */
   public static HttpServer startServer() throws IOException {
-    return startServer(ServerConfig.loadDefault(), new MySQLDatabaseService());
+    ServerConfig conf = ServerConfig.loadDefault();
+    return startServer(conf, new MySQLDatabaseService(conf.getDbUser(), conf.getDbPassword()));
   }
 
   /**

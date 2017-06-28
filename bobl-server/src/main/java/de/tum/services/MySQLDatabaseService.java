@@ -50,10 +50,10 @@ public class MySQLDatabaseService implements DatabaseService, Closeable {
           + "waybackTime, weekdays FROM Demand WHERE user_id = ?";
 
 
-  public MySQLDatabaseService() throws IOException {
+  public MySQLDatabaseService(String user, String password) throws IOException {
 
     try {
-      this.conn = DriverManager.getConnection("jdbc:mysql://localhost/bobl", "root", "");
+      this.conn = DriverManager.getConnection("jdbc:mysql://localhost/bobl", user, password);
 
     } catch (SQLException ex) {
       // handle any errors

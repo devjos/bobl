@@ -46,7 +46,7 @@ public class ServerConfig {
   }
 
   public URI getURI() {
-    return UriBuilder.fromUri("http://localhost").port(port).build();
+    return UriBuilder.fromUri("http://0.0.0.0").port(port).build();
   }
 
   public static ServerConfig load(File confFile) throws IOException {
