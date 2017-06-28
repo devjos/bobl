@@ -1,6 +1,8 @@
-export interface Demand {
+export class Demand {
   id: number;
   src: string;
   dst: string;
-  direction: string;
+  daytime: string;
+  type: string;
+  title: string;
 }

@@ -8,34 +8,36 @@
 
 <ion-content padding>
 
-  <ion-list>
+  <form (ngSubmit)="addDemand()">
+    <ion-list>
 
-    <ion-item>
-      <ion-label color="primary" floating>Von wo möchten Sie starten?</ion-label>
-      <ion-input type="text"></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label color="primary" floating>Von wo möchten Sie starten?</ion-label>
+        <ion-input type="text" [(ngModel)]="demand.src" name="src"></ion-input>
+      </ion-item>
 
-    <ion-item>
-      <ion-label color="primary" floating>Wohin möchten Sie fahren?</ion-label>
-      <ion-input type="text"></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label color="primary" floating>Wohin möchten Sie fahren?</ion-label>
+        <ion-input type="text" [(ngModel)]="demand.dst" name="dst"></ion-input>
+      </ion-item>
 
-    <ion-item-divider></ion-item-divider>
+      <ion-item-divider></ion-item-divider>
 
-    Fahrtzeiten
+      Fahrtzeiten
 
-    <ion-item>
-      <ion-label>Zeitraum</ion-label>
-      <ion-select [(ngModel)]="typeOfDemand">
-        <ion-option value="d">Dauerhaft</ion-option>
-        <ion-option value="z">Zeitraum</ion-option>
-      </ion-select>
-    </ion-item>
+      <ion-item>
+        <ion-label>Zeitraum</ion-label>
+        <ion-select [(ngModel)]="demand.type" name="type">
+          <ion-option value="permanent">Dauerhaft</ion-option>
+          <ion-option value="period">Zeitraum</ion-option>
+        </ion-select>
+      </ion-item>
 
-    <ion-grid>
-      <ion-label>Wochentage</ion-label>
+      <ion-grid>
+        <ion-label>Wochentage</ion-label>
+        <!--
         <ion-row>
-          <ion-checkbox [(ngModel)]="Mo"></ion-checkbox>
+          <ion-checkbox [(ngModel)]="Mo" name="Mo"></ion-checkbox>
           <ion-checkbox [(ngModel)]="Di"></ion-checkbox>
           <ion-checkbox [(ngModel)]="Mi"></ion-checkbox>
           <ion-checkbox [(ngModel)]="Do"></ion-checkbox>
@@ -43,13 +45,22 @@
           <ion-checkbox [(ngModel)]="Sa"></ion-checkbox>
           <ion-checkbox [(ngModel)]="So"></ion-checkbox>
         </ion-row>
-    </ion-grid>
+        -->
+      </ion-grid>
+
+
+      <ion-item>
+        <ion-label>Ankunftszeit</ion-label>
+        <ion-datetime displayFormat="HH:mm" [(ngModel)]="demand.daytime" name="daytime"></ion-datetime>
+      </ion-item>
 
     <ion-item>
-      <ion-label>Gewünschte Ankunftszeit</ion-label>
-      <ion-datetime displayFormat="HH:mm" [(ngModel)]="myDate"></ion-datetime>
+      <ion-label color="primary" floating>Name</ion-label>
+      <ion-input type="text" [(ngModel)]="demand.title" name="title"></ion-input>
     </ion-item>
-  </ion-list>
 
+    </ion-list>
 
+    <button ion-button full type="submit">Speichern</button>
+  </form>
 </ion-content>

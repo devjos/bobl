@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Http, Response} from '@angular/http';
+import {Headers, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/delay';
@@ -10,6 +11,8 @@ import {Demand} from '../models/demand.model';
 export class DemandsService {
 
   constructor(private http: Http) {}
+
+  private demandsUrl = 'assets/demands.json';
 
   getDemands(): Observable<Demand[]> {
     return this.http
@@ -29,5 +32,19 @@ export class DemandsService {
           }
         }
       });
+  }
+
+  create(newDemand: Demand): Observable<Demand> {
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers});
+
+    console.log(newDemand);
+    return this.http.post(this.demandsUrl, {newDemand}, options)
+      .map(this.extractData);
+  }
+
+  private extractData(res: Response) {
+    let body = res.json();
+    return body.data || { };
   }
 }
