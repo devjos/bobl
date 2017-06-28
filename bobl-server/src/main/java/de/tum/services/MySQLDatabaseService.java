@@ -16,7 +16,6 @@ import java.util.List;
 
 import javax.security.auth.login.FailedLoginException;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -167,9 +166,10 @@ public class MySQLDatabaseService implements DatabaseService, Closeable {
       stmt.setString(9, demand.getOutboundTime());
       stmt.setString(10, demand.getWaybackTime());
 
-      StringBuilder builder = new StringBuilder("0000000");
-      for (byte weekday : demand.getWeekdays()) {
-        builder.setCharAt(weekday, '1');
+      StringBuilder builder = new StringBuilder();
+      boolean[] weekdays = demand.getWeekdays();
+      for (int i = 0; i < weekdays.length; i++) {
+        builder = builder.append(weekdays[i] ? "1" : "0");
       }
       stmt.setString(11, builder.toString());
 
@@ -208,16 +208,11 @@ public class MySQLDatabaseService implements DatabaseService, Closeable {
         String waybackTime = results.getString(10);
 
         int weekdaysInt = results.getInt(11);
-        List<Byte> weekdaysList = new ArrayList<>();
-        for (byte i = 0; i < 7; i++) {
-          if (getBit(weekdaysInt, 6 - i) == 1) {
-            weekdaysList.add(i);
-          }
+        // parse weekdays
+        boolean[] weekdays = new boolean[7];
+        for (byte i = 0; i < weekdays.length; i++) {
+          weekdays[i] = getBit(weekdaysInt, 6 - i);
         }
-
-
-        byte[] weekdays =
-            ArrayUtils.toPrimitive(weekdaysList.toArray(new Byte[weekdaysList.size()]));
 
         Demand d = new Demand(title, source, sourceLatitude, sourceLongitude, destination,
             destinationLatitude, destinationLongitude, outboundTime, waybackTime, weekdays);
@@ -234,8 +229,8 @@ public class MySQLDatabaseService implements DatabaseService, Closeable {
     return demandList;
   }
 
-  private int getBit(int number, int bit) {
-    return (number >> bit) & 1;
+  private boolean getBit(int number, int bit) {
+    return ((number >> bit) & 1) == 1;
   }
 
   private void close(Statement stmt) {

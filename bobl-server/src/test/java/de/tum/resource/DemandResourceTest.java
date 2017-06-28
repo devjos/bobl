@@ -61,7 +61,7 @@ public class DemandResourceTest {
     Credentials creds = db.newUser();
     SessionToken token = db.login(creds);
 
-    byte[] weekdays = {0, 2, 4};
+    boolean[] weekdays = {true, true, true, false, false, false, true};
     Demand d = new Demand("Title", "source", "3.4567", "5.6737", "destination", "5.678", "1.2345",
         "11:30", "15:00", weekdays);
 
@@ -89,7 +89,7 @@ public class DemandResourceTest {
 
   @Test
   public void noAuthentication() throws Exception {
-    byte[] weekdays = {0, 3, 5};
+    boolean[] weekdays = {true, true, true, false, false, false, true};
     Demand d = new Demand("Title", "source", "3.4567", "5.6737", "destination", "5.678", "1.2345",
         "12:30", weekdays);
 
