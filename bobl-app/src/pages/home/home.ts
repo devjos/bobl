@@ -27,4 +27,12 @@ export class HomePage implements OnInit {
     this.navCtrl.push(AddPage);
   }
 
+
+  ionViewDidEnter() {
+    console.log("view neu geladen");
+    this.demandsService.getDemands().subscribe(demands => {
+      this.demands = demands;
+    });
+  }
+
 }

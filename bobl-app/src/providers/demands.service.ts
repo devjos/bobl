@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import {Http, Response} from '@angular/http';
 import {Headers, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
@@ -10,21 +10,22 @@ import {Demand} from '../models/demand.model';
 @Injectable()
 export class DemandsService {
 
-  constructor(private http: Http) {}
+  demands: Demand[];
 
-  private demandsUrl = 'assets/demands.json';
+  //private baseUrl = 'http://ec2-52-30-65-64.eu-west-1.compute.amazonaws.com/';
+  private baseUrl = 'http://localhost:3000/';
 
   getDemands(): Observable<Demand[]> {
     return this.http
-      .get('assets/demands.json')
+      .get(this.baseUrl + 'demands')
       .delay(1000)
-      .map((res: Response) => res.json());
+      .map(this.extractData);
   }
 
   getDemand(id): Observable<Demand> {
     return this.http
-      .get('assets/demands.json')
-      .map((res: Response) => res.json())
+      .get(this.baseUrl + 'demands')
+      .map(this.extractData)
       .map((demands: Demand[]) => {
         for (let demand of demands) {
           if (demand.id === id) {
@@ -34,17 +35,33 @@ export class DemandsService {
       });
   }
 
-  create(newDemand: Demand): Observable<Demand> {
-    let headers = new Headers({'Content-Type': 'application/json'});
+  create(newDemand: Demand) {
+    //  var cookie = 123;
+
+    let headers = new Headers();
+    headers.append("Accept", 'application/json');
+    headers.append('Content-Type', 'application/json');
     let options = new RequestOptions({headers: headers});
 
+
     console.log(newDemand);
-    return this.http.post(this.demandsUrl, {newDemand}, options)
-      .map(this.extractData);
+    console.log("an:" + this.baseUrl + 'demands');
+
+    this.http.post(this.baseUrl + 'demands', newDemand, options)
+      .subscribe(data => {
+        console.log(data['_body']);
+      },
+      error => {
+        console.log(error);
+      });
   }
 
   private extractData(res: Response) {
     let body = res.json();
-    return body.data || { };
+    return body || {};
+  }
+
+  constructor(private http: Http) {
+    this.demands = [];
   }
 }

@@ -10,22 +10,25 @@ import {Demand} from "../../models/demand.model";
 export class AddPage implements OnInit {
 
   constructor(public navCtrl: NavController, private demandsService: DemandsService) {
-
   }
 
-  @Input() demand:Demand;
-
-  logForm() {
-    console.log(this.demand);
-  }
+  demand :Demand;
+  id: number;
 
   addDemand() {
+
     this.demandsService.create(this.demand);
   }
 
   ngOnInit() {
-    this.demand = new Demand();
-    this.demand.id = 20;
+    this.demand = {
+      id: 53,
+      title: "",
+      src: "",
+      dst: "",
+      type: "",
+      outboundTime: "",
+    };
   }
 
 }

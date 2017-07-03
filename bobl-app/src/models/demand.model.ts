@@ -1,8 +1,8 @@
 export class Demand {
   id: number;
+  title: string;
   src: string;
   dst: string;
-  daytime: string;
   type: string;
-  title: string;
+  outboundTime: string;
 }
