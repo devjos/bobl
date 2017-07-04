@@ -197,7 +197,12 @@ public class MySQLDatabaseService implements DatabaseService, Closeable {
         String destinationLatitude = results.getString(7);
         String destinationLongitude = results.getString(8);
         String outboundTime = results.getString(9);
+        // remove trailing seconds
+        outboundTime = outboundTime.substring(0, outboundTime.length() - 3);
         String waybackTime = results.getString(10);
+        if (waybackTime != null) {
+          waybackTime = waybackTime.substring(0, waybackTime.length() - 3);
+        }
 
         int weekdaysInt = results.getInt(11);
         // parse weekdays

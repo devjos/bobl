@@ -81,7 +81,7 @@ public class DemandResourceTest {
     assertEquals(d.getSource(), d2.getSource());
     assertEquals(d.getDestination(), d2.getDestination());
     // assertEquals(d.getDestinationLatitude(), d2.getDestinationLatitude());
-    // assertEquals(d.getOutboundTime(), d2.getOutboundTime());
+    assertEquals(d.getOutboundTime(), d2.getOutboundTime());
     assertTrue(Arrays.equals(weekdays, d2.getWeekdays()));
 
   }
