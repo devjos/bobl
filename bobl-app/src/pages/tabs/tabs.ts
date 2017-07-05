@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import { AddPage } from '../add/add';
-import { SettingsPage } from '../settings/settings';
+import { GPSTrackingPage } from '../gpsTracking/gpsTracking';
 import { HomePage } from '../home/home';
 
 @Component({
@@ -11,7 +11,7 @@ export class TabsPage {
 
   tab1Root = HomePage;
   tab2Root = AddPage;
-  tab3Root = SettingsPage;
+  tab3Root = GPSTrackingPage;
 
   constructor() {
 

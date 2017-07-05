@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      GPSTracking
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label>GPS-Tracking</ion-label>
+      <ion-toggle [(ngModel)] = "toggle" (ionChange)="start()" checked = false></ion-toggle>
+    </ion-item>
+  </ion-list>
+  <div [hidden]= "!(isChecked())">
+  <p>  Current Latitude: {{locationTracker.lat}}</p><br/>
+  <p>  Current Longitude: {{locationTracker.lng}}</p>
+  </div>
+</ion-content>

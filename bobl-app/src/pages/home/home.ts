@@ -5,6 +5,7 @@ import { DemandsService } from '../../providers/demands.service';
 import { Demand } from '../../models/demand.model';
 
 import { AddPage } from '../add/add';
+import { GPSTrackingPage } from '../gpsTracking/gpsTracking';
 
 @Component({
   selector: 'page-home',
@@ -12,6 +13,7 @@ import { AddPage } from '../add/add';
 })
 export class HomePage implements OnInit {
   demands: Demand[] = [];
+  gpsTracking = GPSTrackingPage;
 
   constructor(public navCtrl: NavController, private demandsService: DemandsService) {
 
@@ -26,7 +28,6 @@ export class HomePage implements OnInit {
   pushPage() {
     this.navCtrl.push(AddPage);
   }
-
 
   ionViewDidEnter() {
     console.log("view neu geladen");

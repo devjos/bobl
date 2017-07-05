@@ -5,19 +5,22 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
 import { AddPage } from '../pages/add/add';
-import { SettingsPage } from '../pages/settings/settings';
+import { GPSTrackingPage } from '../pages/gpsTracking/gpsTracking';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { DemandsService } from '../providers/demands.service';
+import { LocationTrackerProvider } from '../providers/location-tracker/location-tracker';
+import { BackgroundGeolocation} from '@ionic-native/background-geolocation';
+import { Geolocation } from '@ionic-native/geolocation'
 
 @NgModule({
   declarations: [
     MyApp,
     AddPage,
-    SettingsPage,
+    GPSTrackingPage,
     HomePage,
     TabsPage
   ],
@@ -30,7 +33,7 @@ import { DemandsService } from '../providers/demands.service';
   entryComponents: [
     MyApp,
     AddPage,
-    SettingsPage,
+    GPSTrackingPage,
     HomePage,
     TabsPage
   ],
@@ -38,7 +41,10 @@ import { DemandsService } from '../providers/demands.service';
     StatusBar,
     SplashScreen,
     DemandsService,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    LocationTrackerProvider,
+    BackgroundGeolocation,
+    Geolocation,
   ]
 })
 export class AppModule {}
