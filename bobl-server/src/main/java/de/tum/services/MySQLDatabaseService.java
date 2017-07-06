@@ -4,7 +4,6 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,7 +15,7 @@ import java.util.List;
 
 import javax.security.auth.login.FailedLoginException;
 
-import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -30,7 +29,6 @@ import de.tum.util.RandomUtil;
 public class MySQLDatabaseService implements DatabaseService, Closeable {
 
   private static final Logger log = LogManager.getLogger();
-  private Connection conn;
 
   private final String NEW_USER = "INSERT INTO User (password) VALUES (?)";
   private final String SELECT_USER = "SELECT password FROM User WHERE user_id = ?";
@@ -48,43 +46,36 @@ public class MySQLDatabaseService implements DatabaseService, Closeable {
       "SELECT demand_id, title, source, sourceLatitude, sourceLongitude, "
           + "destination, destinationLatitude, destinationLongitude, outboundTime, "
           + "waybackTime, weekdays FROM Demand WHERE user_id = ?";
+  private BasicDataSource bds = new BasicDataSource();
 
 
-  public MySQLDatabaseService() throws IOException {
-
-    try {
-      this.conn = DriverManager.getConnection("jdbc:mysql://localhost/bobl", "root", "");
-
-    } catch (SQLException ex) {
-      // handle any errors
-      log.error("SQLException: " + ex.getMessage());
-      log.error("SQLState: " + ex.getSQLState());
-      log.error("VendorError: " + ex.getErrorCode());
-      throw new IOException("Could not connect to DB", ex);
-    }
+  public MySQLDatabaseService(String user, String password) throws IOException {
+    bds.setUrl("jdbc:mysql://localhost/bobl");
+    bds.setUsername(user);
+    bds.setPassword(password);
 
   }
-
 
 
   @Override
   public void close() throws IOException {
     try {
-      conn.close();
+      bds.close();
     } catch (SQLException e) {
-      log.error("Could not close MySQL", e);
+      throw new IOException("Could not close database", e);
     }
   }
 
   @Override
   public Credentials newUser() {
     PreparedStatement stmt = null;
-    try {
-      // generate random password
-      String password = RandomUtil.generatePassword();
-      String saltedHash = Password.getSaltedHash(password);
+    // generate random password
+    String password = RandomUtil.generatePassword();
+    String saltedHash = Password.getSaltedHash(password);
 
-      stmt = conn.prepareStatement(NEW_USER, Statement.RETURN_GENERATED_KEYS);
+    try (Connection c = bds.getConnection()) {
+
+      stmt = c.prepareStatement(NEW_USER, Statement.RETURN_GENERATED_KEYS);
       stmt.setString(1, saltedHash);
       stmt.executeUpdate();
       ResultSet set = stmt.getGeneratedKeys();
@@ -110,8 +101,8 @@ public class MySQLDatabaseService implements DatabaseService, Closeable {
   public SessionToken login(Credentials creds) throws FailedLoginException {
 
     PreparedStatement stmt = null;
-    try {
-      stmt = conn.prepareStatement(SELECT_USER, Statement.RETURN_GENERATED_KEYS);
+    try (Connection c = bds.getConnection()) {
+      stmt = c.prepareStatement(SELECT_USER, Statement.RETURN_GENERATED_KEYS);
       stmt.setString(1, creds.getUser());
       ResultSet set = stmt.executeQuery();
       if (set.next()) {
@@ -125,7 +116,7 @@ public class MySQLDatabaseService implements DatabaseService, Closeable {
 
         SessionToken sessionToken = new SessionToken(creds.getUser());
 
-        stmt = conn.prepareStatement(NEW_TOKEN);
+        stmt = c.prepareStatement(NEW_TOKEN);
         stmt.setString(1, sessionToken.getUser());
         stmt.setString(2, sessionToken.getToken());
         stmt.setString(3, sessionToken.getExpirationDate());
@@ -153,9 +144,9 @@ public class MySQLDatabaseService implements DatabaseService, Closeable {
   @Override
   public void addDemand(String userID, Demand demand) {
     PreparedStatement stmt = null;
-    try {
+    try (Connection c = bds.getConnection()) {
 
-      stmt = conn.prepareStatement(NEW_DEMAND);
+      stmt = c.prepareStatement(NEW_DEMAND);
       stmt.setInt(1, Integer.parseInt(userID));
       stmt.setString(2, demand.getTitle());
       stmt.setString(3, demand.getSource());
@@ -167,9 +158,10 @@ public class MySQLDatabaseService implements DatabaseService, Closeable {
       stmt.setString(9, demand.getOutboundTime());
       stmt.setString(10, demand.getWaybackTime());
 
-      StringBuilder builder = new StringBuilder("0000000");
-      for (byte weekday : demand.getWeekdays()) {
-        builder.setCharAt(weekday, '1');
+      StringBuilder builder = new StringBuilder();
+      byte[] weekdays = demand.getWeekdays();
+      for (int i = 0; i < weekdays.length; i++) {
+        builder = builder.append(weekdays[i] == 1 ? "1" : "0");
       }
       stmt.setString(11, builder.toString());
 
@@ -189,9 +181,9 @@ public class MySQLDatabaseService implements DatabaseService, Closeable {
   public Collection<Demand> getDemands(String userID) {
     List<Demand> demandList = null;
     PreparedStatement stmt = null;
-    try {
+    try (Connection c = bds.getConnection()) {
 
-      stmt = conn.prepareStatement(SELECT_DEMAND);
+      stmt = c.prepareStatement(SELECT_DEMAND);
       stmt.setString(1, userID);
 
       ResultSet results = stmt.executeQuery();
@@ -205,19 +197,19 @@ public class MySQLDatabaseService implements DatabaseService, Closeable {
         String destinationLatitude = results.getString(7);
         String destinationLongitude = results.getString(8);
         String outboundTime = results.getString(9);
+        // remove trailing seconds
+        outboundTime = outboundTime.substring(0, outboundTime.length() - 3);
         String waybackTime = results.getString(10);
-
-        int weekdaysInt = results.getInt(11);
-        List<Byte> weekdaysList = new ArrayList<>();
-        for (byte i = 0; i < 7; i++) {
-          if (getBit(weekdaysInt, 6 - i) == 1) {
-            weekdaysList.add(i);
-          }
+        if (waybackTime != null) {
+          waybackTime = waybackTime.substring(0, waybackTime.length() - 3);
         }
 
-
-        byte[] weekdays =
-            ArrayUtils.toPrimitive(weekdaysList.toArray(new Byte[weekdaysList.size()]));
+        int weekdaysInt = results.getInt(11);
+        // parse weekdays
+        byte[] weekdays = new byte[7];
+        for (byte i = 0; i < weekdays.length; i++) {
+          weekdays[i] = getBit(weekdaysInt, 6 - i);
+        }
 
         Demand d = new Demand(title, source, sourceLatitude, sourceLongitude, destination,
             destinationLatitude, destinationLongitude, outboundTime, waybackTime, weekdays);
@@ -234,8 +226,8 @@ public class MySQLDatabaseService implements DatabaseService, Closeable {
     return demandList;
   }
 
-  private int getBit(int number, int bit) {
-    return (number >> bit) & 1;
+  private byte getBit(int number, int bit) {
+    return (byte) ((number >> bit) & 1);
   }
 
   private void close(Statement stmt) {
@@ -247,13 +239,14 @@ public class MySQLDatabaseService implements DatabaseService, Closeable {
       }
   }
 
+
   @Override
   public void verifySession(SessionToken token) throws FailedLoginException {
 
     PreparedStatement stmt = null;
-    try {
+    try (Connection c = bds.getConnection()) {
 
-      stmt = conn.prepareStatement(SELECT_TOKEN);
+      stmt = c.prepareStatement(SELECT_TOKEN);
       stmt.setString(1, token.getUser());
       stmt.setString(2, token.getToken());
 

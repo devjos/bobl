@@ -105,15 +105,14 @@ public class Demand {
       isTime(waybackTime);
     }
 
-    if (weekdays == null || weekdays.length == 0) {
-      throw new IllegalStateException("Weekdays must not be null and contain elements.");
+    if (weekdays == null || weekdays.length != 7) {
+      throw new IllegalStateException("Weekdays must not be null and must contain 7 elements.");
     }
-    for (byte day : weekdays) {
-      if (day < 0 || day > 6) {
-        throw new IllegalStateException("0 <= weekday <= 6");
+    for (byte weekday : weekdays) {
+      if (weekday != 0 && weekday != 1) {
+        throw new IllegalStateException("Only {0, 1} are valid values for weekdays.");
       }
     }
-    // TODO check for duplicates
 
 
   }

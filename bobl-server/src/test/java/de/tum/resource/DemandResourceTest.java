@@ -61,10 +61,9 @@ public class DemandResourceTest {
     Credentials creds = db.newUser();
     SessionToken token = db.login(creds);
 
-    byte[] weekdays = {0, 2, 4};
+    byte[] weekdays = {1, 1, 1, 0, 0, 0, 1};
     Demand d = new Demand("Title", "source", "3.4567", "5.6737", "destination", "5.678", "1.2345",
         "11:30", "15:00", weekdays);
-
     Response response = target.path("demand").request().cookie(token.toCookie())
         .post(Entity.json(new Gson().toJson(d)));
     assertEquals(204, response.getStatus());
@@ -82,14 +81,14 @@ public class DemandResourceTest {
     assertEquals(d.getSource(), d2.getSource());
     assertEquals(d.getDestination(), d2.getDestination());
     // assertEquals(d.getDestinationLatitude(), d2.getDestinationLatitude());
-    // assertEquals(d.getOutboundTime(), d2.getOutboundTime());
+    assertEquals(d.getOutboundTime(), d2.getOutboundTime());
     assertTrue(Arrays.equals(weekdays, d2.getWeekdays()));
 
   }
 
   @Test
   public void noAuthentication() throws Exception {
-    byte[] weekdays = {0, 3, 5};
+    byte[] weekdays = {1, 1, 1, 0, 0, 0, 1};
     Demand d = new Demand("Title", "source", "3.4567", "5.6737", "destination", "5.678", "1.2345",
         "12:30", weekdays);
 
