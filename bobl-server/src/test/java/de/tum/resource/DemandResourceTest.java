@@ -7,6 +7,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.Collection;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -109,5 +110,27 @@ public class DemandResourceTest {
 
     Response response = target.path("demand").request().cookie(token.toCookie()).post(null);
     assertEquals(400, response.getStatus());
+  }
+
+  @Test
+  public void deleteDemand() throws Exception {
+    Credentials creds = db.newUser();
+    SessionToken token = db.login(creds);
+
+    byte[] weekdays = {1, 1, 1, 0, 0, 0, 1};
+    Demand d = new Demand("Title", "source", "3.4567", "5.6737", "destination", "5.678", "1.2345",
+        "12:30", weekdays);
+    db.addDemand(creds.getUser(), d);
+    Collection<Demand> c = db.getDemands(creds.getUser());
+    assertEquals(1, c.size());
+    d = c.iterator().next();
+
+    Response response =
+        target.path("demand/" + d.getID()).request().cookie(token.toCookie()).delete();
+    assertEquals(204, response.getStatus());
+
+    c = db.getDemands(creds.getUser());
+    assertEquals(0, c.size());
+
   }
 }

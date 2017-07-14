@@ -1,10 +1,9 @@
 package de.tum.services;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.security.auth.login.FailedLoginException;
 
@@ -18,7 +17,8 @@ public class MemoryDatabaseService implements DatabaseService {
 
   private final Map<String, String> user = new HashMap<>();
   private final Map<String, SessionToken> sessions = new HashMap<>();
-  private final Map<String, List<Demand>> demands = new HashMap<>();
+  private final Map<Integer, Demand> demands = new HashMap<>();
+  private final Map<Integer, String> demandUserMap = new HashMap<>();
   private int demand_id = 0;
 
   @Override
@@ -50,19 +50,16 @@ public class MemoryDatabaseService implements DatabaseService {
 
   @Override
   public void addDemand(String userID, Demand demand) {
-    List<Demand> demandList = demands.get(userID);
-    if (demandList == null) {
-      demandList = new ArrayList<>();
-      demand.setID(demand_id++);
-      demands.put(userID, demandList);
-    }
-
-    demandList.add(demand);
+    demand_id++;
+    demand.setID(demand_id);
+    demands.put(demand_id, demand);
+    demandUserMap.put(demand_id, userID);
   }
 
   @Override
   public Collection<Demand> getDemands(String userID) {
-    return demands.get(userID);
+    return demandUserMap.entrySet().stream().filter(e -> e.getValue().equals(userID))
+        .map(e -> demands.get(e.getKey())).collect(Collectors.toList());
   }
 
   @Override
@@ -77,6 +74,17 @@ public class MemoryDatabaseService implements DatabaseService {
       throw new FailedLoginException("token expired.");
     }
 
+  }
+
+  @Override
+  public Demand getDemand(String demand_id) {
+    return demands.get(demand_id);
+  }
+
+  @Override
+  public void deleteDemand(int demand_id, String userID) {
+    demands.remove(demand_id);
+    demandUserMap.remove(demand_id);
   }
 
 }

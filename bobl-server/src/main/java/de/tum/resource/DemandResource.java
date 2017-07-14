@@ -4,9 +4,11 @@ import java.util.Collection;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
@@ -63,6 +65,12 @@ public class DemandResource {
     Collection<Demand> demands = db.getDemands(user);
 
     return new Gson().toJson(new DemandWrapper(demands));
+  }
+
+  @Path("{id}")
+  @DELETE
+  public void deleteDemand(@Context SecurityContext sc, @PathParam(value = "id") Integer id) {
+    db.deleteDemand(id, sc.getUserPrincipal().getName());
   }
 
 

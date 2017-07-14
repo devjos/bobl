@@ -46,6 +46,7 @@ public class MySQLDatabaseService implements DatabaseService, Closeable {
       "SELECT demand_id, title, source, sourceLatitude, sourceLongitude, "
           + "destination, destinationLatitude, destinationLongitude, outboundTime, "
           + "waybackTime, weekdays FROM Demand WHERE user_id = ?";
+  private final String DELETE_DEMAND = "DELETE FROM Demand WHERE demand_id = ? AND user_id = ?";
   private BasicDataSource bds = new BasicDataSource();
 
 
@@ -275,6 +276,30 @@ public class MySQLDatabaseService implements DatabaseService, Closeable {
       close(stmt);
     }
 
+  }
+
+
+  @Override
+  public Demand getDemand(String demand_id) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+
+  @Override
+  public void deleteDemand(int demand_id, String userID) {
+    PreparedStatement stmt = null;
+    try (Connection c = bds.getConnection()) {
+      stmt = c.prepareStatement(DELETE_DEMAND);
+      stmt.setInt(1, demand_id);
+      stmt.setString(2, userID);
+      stmt.executeUpdate();
+
+    } catch (SQLException e) {
+      log.error("Could not delete demand.", e);
+    } finally {
+      close(stmt);
+    }
   }
 
 }
