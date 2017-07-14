@@ -19,6 +19,7 @@ public class MemoryDatabaseService implements DatabaseService {
   private final Map<String, String> user = new HashMap<>();
   private final Map<String, SessionToken> sessions = new HashMap<>();
   private final Map<String, List<Demand>> demands = new HashMap<>();
+  private int demand_id = 0;
 
   @Override
   public Credentials newUser() {
@@ -52,6 +53,7 @@ public class MemoryDatabaseService implements DatabaseService {
     List<Demand> demandList = demands.get(userID);
     if (demandList == null) {
       demandList = new ArrayList<>();
+      demand.setID(demand_id++);
       demands.put(userID, demandList);
     }
 

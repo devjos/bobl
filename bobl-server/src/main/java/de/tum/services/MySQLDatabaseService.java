@@ -189,6 +189,7 @@ public class MySQLDatabaseService implements DatabaseService, Closeable {
       ResultSet results = stmt.executeQuery();
       demandList = new ArrayList<>();
       while (results.next()) {
+        int demand_id = results.getInt(1);
         String title = results.getString(2);
         String source = results.getString(3);
         String sourceLatitude = results.getString(4);
@@ -213,6 +214,7 @@ public class MySQLDatabaseService implements DatabaseService, Closeable {
 
         Demand d = new Demand(title, source, sourceLatitude, sourceLongitude, destination,
             destinationLatitude, destinationLongitude, outboundTime, waybackTime, weekdays);
+        d.setID(demand_id);
         demandList.add(d);
       }
 

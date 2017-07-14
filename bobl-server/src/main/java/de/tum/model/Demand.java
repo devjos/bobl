@@ -2,6 +2,7 @@ package de.tum.model;
 
 public class Demand {
 
+  private Integer id;
   private final String title;
 
   private final String source;
@@ -16,6 +17,7 @@ public class Demand {
   private final String waybackTime; // optional
 
   private final byte[] weekdays;
+
 
   public Demand(String title, String source, String sourceLatitude, String sourceLongitude,
       String destination, String destinationLatitude, String destinationLongitude,
@@ -141,6 +143,14 @@ public class Demand {
         "^(\\+|-)?(?:180(?:(?:\\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\\.[0-9]{1,6})?))$")) {
       throw new IllegalStateException("Coordinate is no longitude.");
     }
+  }
+
+  public void setID(int demand_id) {
+    this.id = demand_id;
+  }
+
+  public Integer getID() {
+    return id;
   }
 
 

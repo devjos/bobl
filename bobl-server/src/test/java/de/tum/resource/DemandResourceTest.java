@@ -2,6 +2,8 @@ package de.tum.resource;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
@@ -83,6 +85,9 @@ public class DemandResourceTest {
     // assertEquals(d.getDestinationLatitude(), d2.getDestinationLatitude());
     assertEquals(d.getOutboundTime(), d2.getOutboundTime());
     assertTrue(Arrays.equals(weekdays, d2.getWeekdays()));
+
+    assertNull(d.getID());
+    assertNotNull(d2.getID());
 
   }
 
