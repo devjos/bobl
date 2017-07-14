@@ -8,6 +8,7 @@ export class AuthService {
   headers;
   options;
 
+  //username is an ID assigned by the server.
   user = {
     username: "",
     password: ""
@@ -25,6 +26,10 @@ export class AuthService {
   newUser(username, password) {
     this.user.username = username;
     this.user.password = password;
+  }
+
+  getCurrentUser() {
+    return this.user;
   }
 
   signup(){

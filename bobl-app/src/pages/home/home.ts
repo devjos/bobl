@@ -20,8 +20,14 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit() {
-    console.log("signup");
-    this.authService.signup();
+    if (this.authService.getCurrentUser().username === "") {
+      this.authService.signup();
+      console.log("signup");
+    }
+    else {
+      this.authService.login()
+      console.log("login");
+    }
 
     this.demandsService.getDemands().subscribe(demands => {
       this.demands = demands;
