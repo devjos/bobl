@@ -12,9 +12,11 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { DemandsService } from '../providers/demands.service';
+import {AuthService} from "../providers/auth.service";
 import { LocationTrackerProvider } from '../providers/location-tracker/location-tracker';
 import { BackgroundGeolocation} from '@ionic-native/background-geolocation';
 import { Geolocation } from '@ionic-native/geolocation'
+
 
 @NgModule({
   declarations: [
@@ -41,10 +43,12 @@ import { Geolocation } from '@ionic-native/geolocation'
     StatusBar,
     SplashScreen,
     DemandsService,
+    AuthService,
+
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     LocationTrackerProvider,
     BackgroundGeolocation,
-    Geolocation,
+    Geolocation
   ]
 })
 export class AppModule {}
