@@ -23,4 +23,8 @@ public interface DatabaseService {
 
   void verifySession(SessionToken token) throws FailedLoginException;
 
+  Demand getDemand(String demand_id);
+
+  void deleteDemand(int demand_id, String userID);
+
 }
