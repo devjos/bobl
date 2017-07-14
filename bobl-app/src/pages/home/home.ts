@@ -4,6 +4,8 @@ import { NavController } from 'ionic-angular';
 import { DemandsService } from '../../providers/demands.service';
 import { Demand } from '../../models/demand.model';
 
+import { AuthService } from '../../providers/auth.service';
+
 import { AddPage } from '../add/add';
 
 @Component({
@@ -13,11 +15,14 @@ import { AddPage } from '../add/add';
 export class HomePage implements OnInit {
   demands: Demand[] = [];
 
-  constructor(public navCtrl: NavController, private demandsService: DemandsService) {
+  constructor(public navCtrl: NavController, private demandsService: DemandsService, private authService: AuthService) {
 
   }
 
   ngOnInit() {
+    console.log("signup");
+    this.authService.signup();
+
     this.demandsService.getDemands().subscribe(demands => {
       this.demands = demands;
     });

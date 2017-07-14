@@ -1,0 +1,44 @@
+{
+  "demands": [
+    {
+      "id": 1,
+      "title": "Termin",
+      "src": "Garching",
+      "dst": "Neufinsing",
+      "type": "permanent",
+      "outboundTime": "20:00"
+    },
+    {
+      "id": 40,
+      "title": "",
+      "src": "",
+      "dst": "",
+      "type": "",
+      "outboundTime": ""
+    },
+    {
+      "id": 50,
+      "title": "asdasd",
+      "src": "",
+      "dst": "",
+      "type": "",
+      "outboundTime": ""
+    },
+    {
+      "id": "56",
+      "title": "",
+      "src": "",
+      "dst": "",
+      "type": "",
+      "outboundTime": ""
+    },
+    {
+      "id": "57",
+      "title": "",
+      "src": "",
+      "dst": "",
+      "type": "",
+      "outboundTime": ""
+    }
+  ]
+}

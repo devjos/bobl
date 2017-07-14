@@ -12,6 +12,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { DemandsService } from '../providers/demands.service';
+import {AuthService} from "../providers/auth.service";
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { DemandsService } from '../providers/demands.service';
     StatusBar,
     SplashScreen,
     DemandsService,
+    AuthService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
