@@ -23,7 +23,7 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Root level="INFO" includeLocation="false">
+        <Root level="DEBUG" includeLocation="false">
             <AppenderRef ref="RollingFile" />
             <AppenderRef ref="STDOUT" />
         </Root>

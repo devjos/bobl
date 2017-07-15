@@ -54,6 +54,8 @@ public class AuthFilter implements ContainerRequestFilter {
         throw new WebApplicationException(Status.UNAUTHORIZED);
       }
 
+    } else {
+      log.debug("No session cookie provided");
     }
 
   }
