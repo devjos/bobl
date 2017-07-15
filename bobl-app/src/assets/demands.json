@@ -1,10 +1,17 @@
+//obsolete. delete
 [
   {
-    "id": 1,
-    "title": "Termin",
-    "src": "Garching",
-    "dst": "Neufinsing",
-    "type": "permanent",
-    "outboundTime": "20:00"
+    "id" : null,
+    "title" : "test",
+    "source" : "Garching",
+    "sourceLatitude" : 48.135125,
+    "sourceLongitude" : 11.581981,
+    "destination" : "Neufinsing",
+    "destinationLatitude" : 52.520007,
+    "destinationLongitude" : 13.404954,
+    //"type" : "permanent",
+    "outboundTime" : "20:00",
+    "waybackTime" : null,
+    "weekdays" : [0,0,1,0,0,1,1]
   }
 ]

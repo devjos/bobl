@@ -12,8 +12,8 @@ export class DemandsService {
 
   demands: Demand[];
 
-  //private baseUrl = 'http://ec2-52-30-65-64.eu-west-1.compute.amazonaws.com/';
-  private baseUrl = 'http://localhost:3000/';
+  private baseUrl = 'http://ec2-52-30-65-64.eu-west-1.compute.amazonaws.com/';
+  //private baseUrl = 'http://localhost:3000/';
 
   getDemands(): Observable<Demand[]> {
     return this.http
@@ -36,11 +36,11 @@ export class DemandsService {
   }
 
   create(newDemand: Demand) {
-    //  var cookie = 123;
 
     let headers = new Headers();
-    headers.append("Accept", 'application/json');
-    headers.append('Content-Type', 'application/json');
+    //headers.append("Accept", 'application/json');
+    //headers.append('Content-Type', 'application/json');
+    //headers.append('Cookie', 'session=value');
     let options = new RequestOptions({headers: headers});
 
 

@@ -22,18 +22,21 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit() {
-    if (this.authService.getCurrentUser().username === "") {
+    //for testing
+    let testUser = {
+      user : "83",
+      password : "ler5a34r1nuh"
+    };
+    this.authService.newUser(testUser);
+
+    if (this.authService.getCurrentUser().user === "") {
       this.authService.signup();
       console.log("signup");
     }
     else {
-      this.authService.login()
+      this.authService.login();
       console.log("login");
     }
-
-    this.demandsService.getDemands().subscribe(demands => {
-      this.demands = demands;
-    });
   }
 
   pushPage() {
@@ -42,9 +45,11 @@ export class HomePage implements OnInit {
 
   ionViewDidEnter() {
     console.log("view neu geladen");
+    /*
     this.demandsService.getDemands().subscribe(demands => {
       this.demands = demands;
     });
+    */
   }
 
 }

@@ -13,21 +13,29 @@ export class AddPage implements OnInit {
   }
 
   demand :Demand;
+  demandTest : Demand;
   id: number;
 
   addDemand() {
-
-    this.demandsService.create(this.demand);
+    console.log("demandTest: ");
+    console.log(this.demandTest);
+    this.demandsService.create(this.demandTest);
   }
 
   ngOnInit() {
-    this.demand = {
-      id: 53,
-      title: "",
-      src: "",
-      dst: "",
-      type: "",
-      outboundTime: "",
+    this.demandTest = {
+      "id" : null,
+      "title" : "test",
+      "source" : "Garching",
+      "sourceLatitude" : 48.135125,
+      "sourceLongitude" : 11.581981,
+      "destination" : "Neufinsing",
+      "destinationLatitude" : 52.520007,
+      "destinationLongitude" : 13.404954,
+      //"type" : "permanent",
+      "outboundTime" : "20:00",
+      "waybackTime" : null,
+      "weekdays" : [false,false,true,false,false,true,true]
     };
   }
 
