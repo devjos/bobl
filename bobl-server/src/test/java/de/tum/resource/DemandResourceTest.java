@@ -100,7 +100,7 @@ public class DemandResourceTest {
 
 
     Response response = target.path("demand").request().post(Entity.json(new Gson().toJson(d)));
-    assertEquals(403, response.getStatus());
+    assertEquals(401, response.getStatus());
   }
 
   @Test
