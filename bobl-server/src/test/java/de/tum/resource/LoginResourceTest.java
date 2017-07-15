@@ -1,4 +1,4 @@
-package de.tum;
+package de.tum.resource;
 
 
 import static org.junit.Assert.assertEquals;
@@ -20,18 +20,24 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 
+import de.tum.Main;
+import de.tum.ServerConfig;
 import de.tum.model.Credentials;
+import de.tum.model.DatabaseService;
 import de.tum.model.SessionToken;
-import de.tum.services.MySQLDatabaseService;
+import de.tum.services.MemoryDatabaseService;
 
 public class LoginResourceTest {
 
   private HttpServer server;
   private WebTarget target;
+  private DatabaseService db;
 
   @Before
   public void setUp() throws Exception {
-    server = Main.startServer(new MySQLDatabaseService(false));
+    db = new MemoryDatabaseService();
+    ServerConfig conf = ServerConfig.loadDefault();
+    server = Main.startServer(conf, db);
     Client c = ClientBuilder.newClient();
 
     // uncomment the following line if you want to enable
@@ -40,7 +46,7 @@ public class LoginResourceTest {
     // --
     // c.configuration().enable(new org.glassfish.jersey.media.json.JsonJaxbFeature());
 
-    target = c.target(Main.BASE_URI);
+    target = c.target(conf.getURI());
   }
 
   @After
@@ -53,7 +59,8 @@ public class LoginResourceTest {
    */
   @Test
   public void createNewSessionID() {
-    Credentials creds = new Credentials("user", "password");
+    Credentials creds = db.newUser();
+
     Response response = target.path("login").request()
         .post(Entity.entity(new Gson().toJson(creds), MediaType.APPLICATION_JSON));
     assertEquals(200, response.getStatus());
@@ -62,6 +69,15 @@ public class LoginResourceTest {
     assertNotNull(c);
     SessionToken token = SessionToken.fromCookie(c);
     assertTrue(token.getToken().matches("[a-zA-Z0-9]+"));
+    assertEquals(creds.getUser(), token.getUser());
 
+  }
+
+
+  @Test
+  public void emptyRequest() {
+    Response response =
+        target.path("login").request().post(Entity.entity(null, MediaType.APPLICATION_JSON));
+    assertEquals(400, response.getStatus());
   }
 }

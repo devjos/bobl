@@ -1,13 +1,11 @@
-package de.tum;
+package de.tum.resource;
 
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
 
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.junit.After;
@@ -16,18 +14,24 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 
-import de.tum.model.Demand;
-import de.tum.model.SessionToken;
-import de.tum.services.MySQLDatabaseService;
+import de.tum.Main;
+import de.tum.ServerConfig;
+import de.tum.model.Credentials;
+import de.tum.model.DatabaseService;
+import de.tum.services.MemoryDatabaseService;
 
-public class DemandResourceTest {
+public class SignupResourceTest {
 
   private HttpServer server;
   private WebTarget target;
+  private DatabaseService db;
+
 
   @Before
   public void setUp() throws Exception {
-    server = Main.startServer(new MySQLDatabaseService(false));
+    db = new MemoryDatabaseService();
+    ServerConfig conf = ServerConfig.loadDefault();
+    server = Main.startServer(conf, db);
     Client c = ClientBuilder.newClient();
 
     // uncomment the following line if you want to enable
@@ -36,7 +40,7 @@ public class DemandResourceTest {
     // --
     // c.configuration().enable(new org.glassfish.jersey.media.json.JsonJaxbFeature());
 
-    target = c.target(Main.BASE_URI);
+    target = c.target(conf.getURI());
   }
 
   @After
@@ -47,12 +51,12 @@ public class DemandResourceTest {
 
   @Test
   public void test() {
-    Demand d = new Demand();
-    SessionToken token = new SessionToken("user", "accessFooBar");
+    String response = target.path("signup").request().post(null, String.class);
 
-    Response response = target.path("demand").request().cookie(token.toCookie())
-        .post(Entity.json(new Gson().toJson(d)));
-    assertEquals(204, response.getStatus());
+    Credentials creds = new Gson().fromJson(response, Credentials.class);
+    assertNotNull(creds);
+    assertNotNull(creds.getUser());
+    assertNotNull(creds.getPassword());
 
   }
 }
