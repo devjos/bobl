@@ -47,11 +47,6 @@ export class AuthService {
   }
 
   login() {
-    //  let credentials = this.user.user + this.user.password;
-    //  this.headers.append('Authorization', 'Basic' + btoa(credentials));
-    //  this.options = new RequestOptions({headers: this.headers});
-    //  console.log(this.options);
-
     this.http.post(this.baseUrl + 'login', {
       user: this.user.user,
       password: this.user.password

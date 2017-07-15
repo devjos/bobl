@@ -45,11 +45,12 @@ export class HomePage implements OnInit {
 
   ionViewDidEnter() {
     console.log("view neu geladen");
-    /*
+
     this.demandsService.getDemands().subscribe(demands => {
       this.demands = demands;
     });
-    */
+
+    console.log(this.demands);
   }
 
 }

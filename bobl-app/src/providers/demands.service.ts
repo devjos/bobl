@@ -15,16 +15,31 @@ export class DemandsService {
   private baseUrl = 'http://ec2-52-30-65-64.eu-west-1.compute.amazonaws.com/';
   //private baseUrl = 'http://localhost:3000/';
 
+  private extractData(res: Response) {
+    let body = res.json();
+    return body || {};
+  }
+
   getDemands(): Observable<Demand[]> {
+
+    //test cookie
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Cookie', 'session=eyJ1c2VyIjoiODMiLCJ0b2tlbiI6IjYyNDgxOTA4MGJhYmEyMGFhNjYyOGU4NDdkZmMyOWJkMmQyYTI0YzgyNDE1MTcxYjFiNTZlNjk3M2RiMzE3MGEiLCJleHBpcmF0aW9uRGF0ZSI6IjIwMTctMDgtMTRUMTc6MTM6MzcuNzExIn0=');
+    let options = new RequestOptions({headers: headers});
+
+    console.log(this.baseUrl+'demand');
+
     return this.http
-      .get(this.baseUrl + 'demands')
+      .get(this.baseUrl + 'demand', options)
       .delay(1000)
       .map(this.extractData);
   }
 
   getDemand(id): Observable<Demand> {
+
     return this.http
-      .get(this.baseUrl + 'demands')
+      .get(this.baseUrl + 'demand')
       .map(this.extractData)
       .map((demands: Demand[]) => {
         for (let demand of demands) {
@@ -39,26 +54,20 @@ export class DemandsService {
 
     let headers = new Headers();
     //headers.append("Accept", 'application/json');
-    //headers.append('Content-Type', 'application/json');
     //headers.append('Cookie', 'session=value');
     let options = new RequestOptions({headers: headers});
 
 
     console.log(newDemand);
-    console.log("an:" + this.baseUrl + 'demands');
+    console.log("an:" + this.baseUrl + 'demand');
 
-    this.http.post(this.baseUrl + 'demands', newDemand, options)
+    this.http.post(this.baseUrl + 'demand', newDemand, options)
       .subscribe(data => {
         console.log(data['_body']);
       },
       error => {
         console.log(error);
       });
-  }
-
-  private extractData(res: Response) {
-    let body = res.json();
-    return body || {};
   }
 
   constructor(private http: Http) {

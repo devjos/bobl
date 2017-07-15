@@ -17,12 +17,16 @@ export class AddPage implements OnInit {
   id: number;
 
   addDemand() {
+
+    //change demandTest to demand when ready.
     console.log("demandTest: ");
     console.log(this.demandTest);
     this.demandsService.create(this.demandTest);
   }
 
   ngOnInit() {
+
+    //test demand
     this.demandTest = {
       "id" : null,
       "title" : "test",
