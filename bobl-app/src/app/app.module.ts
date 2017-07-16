@@ -18,6 +18,7 @@ import {AuthService} from "../providers/auth.service";
 import { LocationTrackerProvider } from '../providers/location-tracker/location-tracker';
 import { BackgroundGeolocation} from '@ionic-native/background-geolocation';
 import { Geolocation } from '@ionic-native/geolocation'
+import { NativeGeocoder, NativeGeocoderForwardResult } from '@ionic-native/native-geocoder';
 
 
 @NgModule({
@@ -52,11 +53,16 @@ import { Geolocation } from '@ionic-native/geolocation'
     LocationTrackerProvider,
     BackgroundGeolocation,
 <<<<<<< HEAD
+<<<<<<< HEAD
     Geolocation
 =======
     Geolocation,
     File
 >>>>>>> gps
+=======
+    Geolocation,
+    NativeGeocoder
+>>>>>>> 31bdac6095bee52ea0332a9c7d039a179c3b1717
   ]
 })
 export class AppModule {}

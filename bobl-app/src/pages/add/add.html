@@ -13,25 +13,23 @@
 
       <ion-item>
         <ion-label color="primary" floating>Von wo möchten Sie starten?</ion-label>
-        <ion-input type="text" [(ngModel)]="demand.src" name="src"></ion-input>
+        <ion-input type="text" [(ngModel)]="demand.source" name="source"></ion-input>
       </ion-item>
-
       <ion-item>
         <ion-label color="primary" floating>Wohin möchten Sie fahren?</ion-label>
-        <ion-input type="text" [(ngModel)]="demand.dst" name="dst"></ion-input>
+        <ion-input type="text" [(ngModel)]="demand.destination" name="destination"></ion-input>
       </ion-item>
 
       <ion-item-divider></ion-item-divider>
-
-      Fahrtzeiten
-
-      <ion-item>
-        <ion-label>Zeitraum</ion-label>
-        <ion-select [(ngModel)]="demand.type" name="type">
+      <!--
+            <ion-item>
+              <ion-label>Art des Bedarfs</ion-label>
+              <ion-select [(ngModel)]="demand.type" name="type">
           <ion-option value="permanent">Dauerhaft</ion-option>
           <ion-option value="period">Zeitraum</ion-option>
         </ion-select>
       </ion-item>
+      -->
 
       <ion-grid>
         <ion-label>Wochentage</ion-label>
@@ -57,11 +55,6 @@
       <ion-item>
         <ion-label color="primary" floating>Name</ion-label>
         <ion-input type="text" [(ngModel)]="demand.title" name="title"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label color="primary" floating>id</ion-label>
-        <ion-input type="number" [(ngModel)]="demand.id" name="id"></ion-input>
       </ion-item>
 
     </ion-list>
