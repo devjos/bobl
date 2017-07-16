@@ -16,6 +16,7 @@ export class AddPage implements OnInit {
   demand: Demand;
   demandTest: Demand;
   id: number;
+  //geocodeOutput: any;
 
   addDemand() {
 
@@ -31,7 +32,8 @@ export class AddPage implements OnInit {
 
   getLocation(location: string) {
     this.nativeGeocoder.forwardGeocode(location)
-      .then((coordinates: NativeGeocoderForwardResult) => console.log('The coordinates are latitude=' + coordinates.latitude + ' and longitude=' + coordinates.longitude))
+      .then((coordinates: NativeGeocoderForwardResult) => console.log('The coordinates are latitude='
+          + coordinates.latitude + ' and longitude=' + coordinates.longitude))
       .catch((error: any) => console.log(error));
   }
 
