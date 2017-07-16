@@ -6,8 +6,6 @@ import javax.security.auth.login.FailedLoginException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Cookie;
-import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -51,8 +49,7 @@ public class LoginResource {
     try {
       SessionToken token = db.login(creds);
 
-      Cookie c = token.toCookie();
-      return Response.ok().cookie(new NewCookie(c)).build();
+      return Response.ok().header("bobl-cookie", token.toCookieString()).build();
     } catch (FailedLoginException e) {
       log.debug("Login failed.", e);
       throw new WebApplicationException(Status.UNAUTHORIZED);

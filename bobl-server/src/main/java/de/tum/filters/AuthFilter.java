@@ -40,9 +40,9 @@ public class AuthFilter implements ContainerRequestFilter {
       return;
     }
 
-    Cookie c = request.getCookies().get("session");
-    if (c != null) {
-      SessionToken token = SessionToken.fromCookie(c);
+    String c = request.getHeaderString("bobl-cookie");
+    if (c != null && !c.isEmpty()) {
+      SessionToken token = SessionToken.fromCookie(Cookie.valueOf(c));
 
       try {
         db.verifySession(token);

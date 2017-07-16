@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 import javax.ws.rs.core.Cookie;
+import javax.ws.rs.core.NewCookie;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -42,6 +43,10 @@ public class SessionToken {
 
   public Cookie toCookie() {
     return new Cookie("session", Base64.encodeBase64String(new Gson().toJson(this).getBytes()));
+  }
+
+  public String toCookieString() {
+    return new NewCookie(toCookie()).toString();
   }
 
   public static SessionToken fromCookie(Cookie c) {
