@@ -25,8 +25,10 @@ export class DemandsService {
     //test cookie
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    headers.append('Cookie', 'session=eyJ1c2VyIjoiODMiLCJ0b2tlbiI6IjYyNDgxOTA4MGJhYmEyMGFhNjYyOGU4NDdkZmMyOWJkMmQyYTI0YzgyNDE1MTcxYjFiNTZlNjk3M2RiMzE3MGEiLCJleHBpcmF0aW9uRGF0ZSI6IjIwMTctMDgtMTRUMTc6MTM6MzcuNzExIn0=');
+    //headers.append('Authorization','Basic ' + btoa('83'+':'+'ler5a34r1nuh'));
+    //headers.append('Cookie', '');
     let options = new RequestOptions({headers: headers});
+    //options.withCredentials = true;
 
     console.log(this.baseUrl+'demand');
 

@@ -16,6 +16,7 @@ import {AuthService} from "../providers/auth.service";
 import { LocationTrackerProvider } from '../providers/location-tracker/location-tracker';
 import { BackgroundGeolocation} from '@ionic-native/background-geolocation';
 import { Geolocation } from '@ionic-native/geolocation'
+import { NativeGeocoder, NativeGeocoderForwardResult } from '@ionic-native/native-geocoder';
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import { Geolocation } from '@ionic-native/geolocation'
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     LocationTrackerProvider,
     BackgroundGeolocation,
-    Geolocation
+    Geolocation,
+    NativeGeocoder
   ]
 })
 export class AppModule {}
