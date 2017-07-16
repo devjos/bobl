@@ -52,17 +52,9 @@ import { NativeGeocoder, NativeGeocoderForwardResult } from '@ionic-native/nativ
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     LocationTrackerProvider,
     BackgroundGeolocation,
-<<<<<<< HEAD
-<<<<<<< HEAD
-    Geolocation
-=======
     Geolocation,
-    File
->>>>>>> gps
-=======
-    Geolocation,
+    File,
     NativeGeocoder
->>>>>>> 31bdac6095bee52ea0332a9c7d039a179c3b1717
   ]
 })
 export class AppModule {}
