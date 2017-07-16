@@ -35,8 +35,8 @@ public class AuthFilter implements ContainerRequestFilter {
     String method = request.getMethod();
     String path = request.getUriInfo().getPath(true);
 
-    if (method.equals("GET")
-        && (path.equals("application.wadl") || path.equals("application.wadl/xsd0.xsd"))) {
+    if (method.equals("POST") && (path.equals("signup") || path.equals("login"))) {
+      log.debug("Signup and login, will skip authentication.");
       return;
     }
 
@@ -54,6 +54,9 @@ public class AuthFilter implements ContainerRequestFilter {
         throw new WebApplicationException(Status.UNAUTHORIZED);
       }
 
+    } else {
+      log.info("No session cookie provided. User is not authorized.");
+      throw new WebApplicationException(Status.UNAUTHORIZED);
     }
 
   }
