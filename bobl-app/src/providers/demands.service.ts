@@ -1,4 +1,4 @@
-import {Inject, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Http, Response} from '@angular/http';
 import {Headers, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
@@ -6,18 +6,17 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/delay';
 
 import {Demand} from '../models/demand.model';
+import {AuthService} from "./auth.service";
 
 @Injectable()
 export class DemandsService {
-
   demands: Demand[];
 
   private baseUrl = 'http://ec2-52-30-65-64.eu-west-1.compute.amazonaws.com/';
   //private baseUrl = 'http://localhost:3000/';
 
-  private extractData(res: Response) {
-    let body = res.json();
-    return body || {};
+  constructor(private http: Http, private authService: AuthService) {
+    this.demands = [];
   }
 
   getDemands(): Observable<Demand[]> {
@@ -25,8 +24,7 @@ export class DemandsService {
     //test cookie
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    //headers.append('Authorization','Basic ' + btoa('83'+':'+'ler5a34r1nuh'));
-    //headers.append('Cookie', '');
+    headers.append('bobl-cookie', this.authService.getBoblCookie());
     let options = new RequestOptions({headers: headers});
     //options.withCredentials = true;
 
@@ -56,7 +54,7 @@ export class DemandsService {
 
     let headers = new Headers();
     //headers.append("Accept", 'application/json');
-    //headers.append('Cookie', 'session=value');
+    headers.append('bobl-cookie', 'session=eyJ1c2VyIjoiODMiLCJ0b2tlbiI6IjVhYTM0YjNkOGQzMjc4ODdiMDFmZjc4NjllNTgzOGM3Mjg5NTljYmY5NGY1ZmM1ZmYxNjUxYzY4Mjk4NmJkYTMiLCJleHBpcmF0aW9uRGF0ZSI6IjIwMTctMDgtMTVUMTk6NDg6MDUuMzM5In0=');
     let options = new RequestOptions({headers: headers});
 
 
@@ -72,7 +70,8 @@ export class DemandsService {
       });
   }
 
-  constructor(private http: Http) {
-    this.demands = [];
+  private extractData(res: Response) {
+    let body = res.json();
+    return body || {};
   }
 }
