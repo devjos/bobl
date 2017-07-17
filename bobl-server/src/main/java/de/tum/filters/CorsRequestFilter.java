@@ -26,10 +26,7 @@ public class CorsRequestFilter implements ContainerRequestFilter {
       log.info("HTTP Method (OPTIONS) - Detected!");
 
       // Just send a OK signal back to the browser
-      requestCtx.abortWith(Response.ok().header("Access-Control-Allow-Origin", "*")
-          .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
-          .header("Access-Control-Allow-Credentials", "true")
-          .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD").build());
+      requestCtx.abortWith(Response.ok().build());
     }
   }
 }
