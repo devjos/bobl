@@ -6,7 +6,6 @@ import javax.security.auth.login.FailedLoginException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.logging.log4j.LogManager;
@@ -14,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.gson.Gson;
 
+import de.tum.CookieJson;
 import de.tum.model.Credentials;
 import de.tum.model.DatabaseService;
 import de.tum.model.SessionToken;
@@ -35,7 +35,7 @@ public class LoginResource {
    * @return session id
    */
   @POST
-  public Response login(String content) {
+  public String login(String content) {
     log.debug("Received login request");
     if (content == null || content.isEmpty()) {
       throw new WebApplicationException(Status.BAD_REQUEST);
@@ -48,8 +48,7 @@ public class LoginResource {
 
     try {
       SessionToken token = db.login(creds);
-
-      return Response.ok().header("x-bobl-cookie", token.toCookieString()).build();
+      return new Gson().toJson(new CookieJson(token.toCookieString()));
     } catch (FailedLoginException e) {
       log.debug("Login failed.", e);
       throw new WebApplicationException(Status.UNAUTHORIZED);
