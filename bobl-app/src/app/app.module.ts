@@ -19,7 +19,6 @@ import { LocationTrackerProvider } from '../providers/location-tracker/location-
 import { BackgroundGeolocation} from '@ionic-native/background-geolocation';
 import { Geolocation } from '@ionic-native/geolocation'
 import { NativeGeocoder } from '@ionic-native/native-geocoder';
-import {IonicStorageModule} from "@ionic/storage";
 
 
 @NgModule({
