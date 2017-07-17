@@ -95,43 +95,50 @@ export class AddPage implements OnInit {
     alert.addInput({
       type: 'checkbox',
       label: 'Montag',
-      value: '0'
+      value: '0',
+      checked: Boolean(this.demand.weekdays[0])
     });
 
     alert.addInput({
       type: 'checkbox',
       label: 'Dienstag',
-      value: '1'
+      value: '1',
+      checked: Boolean(this.demand.weekdays[1])
     });
 
     alert.addInput({
       type: 'checkbox',
       label: 'Mittwoch',
-      value: '2'
+      value: '2',
+      checked: Boolean(this.demand.weekdays[2])
     });
 
     alert.addInput({
       type: 'checkbox',
       label: 'Donnerstag',
-      value: '3'
+      value: '3',
+      checked: Boolean(this.demand.weekdays[3])
     });
 
     alert.addInput({
       type: 'checkbox',
       label: 'Freitag',
-      value: '4'
+      value: '4',
+      checked: Boolean(this.demand.weekdays[4])
     });
 
     alert.addInput({
       type: 'checkbox',
       label: 'Samstag',
-      value: '5'
+      value: '5',
+      checked: Boolean(this.demand.weekdays[5])
     });
 
     alert.addInput({
       type: 'checkbox',
       label: 'Sonntag',
-      value: '6'
+      value: '6',
+      checked: Boolean(this.demand.weekdays[6])
     });
 
     alert.addButton('Abbrechen');
