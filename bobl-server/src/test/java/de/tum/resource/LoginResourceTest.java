@@ -65,7 +65,7 @@ public class LoginResourceTest {
         .post(Entity.entity(new Gson().toJson(creds), MediaType.APPLICATION_JSON));
     assertEquals(200, response.getStatus());
 
-    Cookie c = Cookie.valueOf(response.getHeaderString("bobl-cookie"));
+    Cookie c = Cookie.valueOf(response.getHeaderString("x-bobl-cookie"));
     assertNotNull(c);
     SessionToken token = SessionToken.fromCookie(c);
     assertTrue(token.getToken().matches("[a-zA-Z0-9]+"));

@@ -44,7 +44,7 @@ public class AuthFilter implements ContainerRequestFilter {
       return;
     }
 
-    String c = request.getHeaderString("bobl-cookie");
+    String c = request.getHeaderString("x-bobl-cookie");
     if (c != null && !c.isEmpty()) {
       SessionToken token = SessionToken.fromCookie(Cookie.valueOf(c));
 

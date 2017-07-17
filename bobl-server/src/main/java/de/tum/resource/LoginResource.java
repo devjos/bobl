@@ -49,7 +49,7 @@ public class LoginResource {
     try {
       SessionToken token = db.login(creds);
 
-      return Response.ok().header("bobl-cookie", token.toCookieString()).build();
+      return Response.ok().header("x-bobl-cookie", token.toCookieString()).build();
     } catch (FailedLoginException e) {
       log.debug("Login failed.", e);
       throw new WebApplicationException(Status.UNAUTHORIZED);
