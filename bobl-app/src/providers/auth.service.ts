@@ -1,38 +1,73 @@
 import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
 import {Storage} from "@ionic/storage";
+import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class AuthService {
 
   user = {
-    user: "106",
-    password: "peegsralgplj"
+    user: "",
+    password: ""
   };
+  /*
+   user = {
+   user: "113",
+   password: "j5dpj4r206ln",
+   };
+   */
+  //wait for storage to load data.
+  initialized = false;
 
-  boblCookie: "session=eyJ1c2VyIjoiODMiLCJ0b2tlbiI6IjVhYTM0YjNkOGQzMjc4ODdiMDFmZjc4NjllNTgzOGM3Mjg5NTljYmY5NGY1ZmM1ZmYxNjUxYzY4Mjk4NmJkYTMiLCJleHBpcmF0aW9uRGF0ZSI6IjIwMTctMDgtMTVUMTk6NDg6MDUuMzM5In0=";
+  boblCookie;
 
   private baseUrl = 'http://ec2-52-30-65-64.eu-west-1.compute.amazonaws.com/';
 
   constructor(private http: Http, private storage: Storage) {
-    //this.headers = new Headers();
-    //this.headers.append('Content-Type', 'application/json');
-    //this.headers.append('Authorization','Basic' + btoa('username:password'));
-    //console.log("options: ");
-    //console.log(this.options);
-    this.loadUser();
   }
 
-  setBoblCookie(boblCookie: string) {
-    this.storage.set('bobl-cookie', boblCookie);
+  authenticate(fn) {
+
+    this.storage.get('user-user').then(u => {
+      this.storage.get('user-password').then(pw => {
+        console.log("Pre login Current user: " + this.getCurrentUser().user + " "
+          + this.getCurrentUser().password);
+        this.user.user = u;
+        this.user.password = pw;
+
+        if (!this.isAuthenticated()) {
+          this.signup();
+          console.log("signup");
+        }
+        console.log("Post login Current user: " + this.getCurrentUser().user + " "
+          + this.getCurrentUser().password);
+
+        this.login(fn);
+        console.log("login");
+
+      })
+    })
+  }
+
+  setBoblCookie(boblCookie) {
+    this.storage.set('bobl-cookie', boblCookie.cookie);
   }
 
   getBoblCookie() {
-    this.storage.get('bobl-cookie').then(value => {
-      this.boblCookie = value;
-    });
     return this.boblCookie;
   }
+
+  /*
+   getBoblCookie(): Observable<string> {
+   return new Observable(observer => {
+   this.storage.get('bobl-cookie').then(value => {
+   observer.next(value);
+   observer.complete();
+   })
+   });
+
+   }
+   */
 
   deleteUser() {
     this.storage.set('user-user', '');
@@ -65,7 +100,9 @@ export class AuthService {
       console.log("user-password: " + value);
       this.user.password = value;
       console.log("user.password: " + this.user.password);
+      this.initialized = true;
     });
+
   }
 
   signup() {
@@ -79,16 +116,16 @@ export class AuthService {
         });
   }
 
-  login() {
+  login(fn) {
     this.http.post(this.baseUrl + 'login', {
       user: this.user.user,
       password: this.user.password
     })
       .subscribe(data => {
           console.log(data['_body']);
-
-          console.log("bobl-Cookie: " + data.headers.get('bobl-cookie'));
-          this.setBoblCookie(data.headers.get('bobl-cookie'));
+          console.log('setze cookie');
+          this.boblCookie = (JSON.parse(data['_body']));
+          fn();
         },
         error => {
           console.log(error);

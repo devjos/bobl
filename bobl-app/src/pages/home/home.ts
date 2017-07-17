@@ -8,6 +8,7 @@ import {AuthService} from '../../providers/auth.service';
 
 import {AddPage} from '../add/add';
 import {GPSTrackingPage} from '../gpsTracking/gpsTracking';
+import {delay} from "rxjs/operator/delay";
 
 @Component({
   selector: 'page-home',
@@ -32,30 +33,28 @@ export class HomePage {
      */
     //this.authService.deleteUser();
 
-    if (this.authService.isAuthenticated()) {
-      this.authService.login();
-      console.log("login");
-    }
-    else {
-      this.authService.signup();
-      console.log("signup");
-    }
-    console.log("Current user: " + this.authService.getCurrentUser().user + " "
-      + this.authService.getCurrentUser().password);
-  }
 
+
+  }
   pushPage() {
     this.navCtrl.push(AddPage);
   }
 
   ionViewDidEnter() {
+    let inner = this;
     console.log("view neu geladen");
-    /*
-     this.demandsService.getDemands().subscribe(demands => {
-     this.demands = demands;
-     });
-     */
+    this.authService.authenticate(function (){
+      console.log('call demand service');
+      inner.demandsService.getDemands().subscribe(demands => {
+        inner.demands = demands;
+        console.log("demands: "+ demands);
+
+        if (inner.demands.length === 0) {
+          inner.demands = inner.demandsService.getDummyDemand();
+        }
+      });
+    });
+    this.demands = inner.demands;
     console.log(this.demands);
   }
-
 }

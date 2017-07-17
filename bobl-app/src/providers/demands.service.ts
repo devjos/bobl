@@ -12,28 +12,38 @@ import {AuthService} from "./auth.service";
 export class DemandsService {
   demands: Demand[];
 
+  dummyDemand = {
+      "id": null,
+      "title": "Erstellen Sie Ihren ersten Bedarf",
+      "source": "",
+      "sourceLatitude": null,
+      "sourceLongitude": null,
+      "destination": "",
+      "destinationLatitude": null,
+      "destinationLongitude": null,
+      //"type" : "permanent",
+      "outboundTime": "",
+      "waybackTime": "",
+      "weekdays": [false, false, false, false, false, false, false]
+    };
+  dummyDemands: Array<Demand> = [this.dummyDemand];
+
   private baseUrl = 'http://ec2-52-30-65-64.eu-west-1.compute.amazonaws.com/';
   //private baseUrl = 'http://localhost:3000/';
 
   constructor(private http: Http, private authService: AuthService) {
     this.demands = [];
+
   }
 
   getDemands(): Observable<Demand[]> {
 
-    //test cookie
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    headers.append('bobl-cookie', this.authService.getBoblCookie());
+    headers.append('x-bobl-cookie', this.authService.getBoblCookie().cookie);
     let options = new RequestOptions({headers: headers});
-    //options.withCredentials = true;
 
-    console.log(this.baseUrl+'demand');
-
-    return this.http
-      .get(this.baseUrl + 'demand', options)
-      .delay(1000)
-      .map(this.extractData);
+    return this.http.get(this.baseUrl + 'demand', options).map(this.extractData);
   }
 
   getDemand(id): Observable<Demand> {
@@ -54,7 +64,7 @@ export class DemandsService {
 
     let headers = new Headers();
     //headers.append("Accept", 'application/json');
-    headers.append('bobl-cookie', 'session=eyJ1c2VyIjoiODMiLCJ0b2tlbiI6IjVhYTM0YjNkOGQzMjc4ODdiMDFmZjc4NjllNTgzOGM3Mjg5NTljYmY5NGY1ZmM1ZmYxNjUxYzY4Mjk4NmJkYTMiLCJleHBpcmF0aW9uRGF0ZSI6IjIwMTctMDgtMTVUMTk6NDg6MDUuMzM5In0=');
+    headers.append('x-bobl-cookie', this.authService.getBoblCookie().cookie);
     let options = new RequestOptions({headers: headers});
 
 
@@ -63,15 +73,22 @@ export class DemandsService {
 
     this.http.post(this.baseUrl + 'demand', newDemand, options)
       .subscribe(data => {
-        console.log(data['_body']);
-      },
-      error => {
-        console.log(error);
-      });
+          console.log(data['_body']);
+        },
+        error => {
+          console.log(error);
+        });
+  }
+
+  getDummyDemand(): Demand[] {
+    return this.dummyDemands;
   }
 
   private extractData(res: Response) {
     let body = res.json();
-    return body || {};
+    console.log(body);
+
+    this.demands = body.demands;
+    return this.demands;
   }
 }
