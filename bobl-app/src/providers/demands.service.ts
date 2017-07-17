@@ -28,26 +28,28 @@ export class DemandsService {
     };
   dummyDemands: Array<Demand> = [this.dummyDemand];
 
+  options;
+
   private baseUrl = 'http://ec2-52-30-65-64.eu-west-1.compute.amazonaws.com/';
   //private baseUrl = 'http://localhost:3000/';
 
   constructor(private http: Http, private authService: AuthService) {
     this.demands = [];
+  }
 
+  setRequestOptions() {
+    let headers = new Headers();
+    headers.append("Accept", 'application/json');
+    headers.append('x-bobl-cookie', this.authService.getBoblCookie().cookie);
+    this.options = new RequestOptions({headers: headers});
   }
 
   getDemands(): Observable<Demand[]> {
-
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('x-bobl-cookie', this.authService.getBoblCookie().cookie);
-    let options = new RequestOptions({headers: headers});
-
-    return this.http.get(this.baseUrl + 'demand', options).map(this.extractData);
+    this.setRequestOptions();
+    return this.http.get(this.baseUrl + 'demand', this.options).map(this.extractData);
   }
 
   getDemand(id): Observable<Demand> {
-
     return this.http
       .get(this.baseUrl + 'demand')
       .map(this.extractData)
@@ -61,17 +63,26 @@ export class DemandsService {
   }
 
   create(newDemand: Demand) {
-
-    let headers = new Headers();
-    //headers.append("Accept", 'application/json');
-    headers.append('x-bobl-cookie', this.authService.getBoblCookie().cookie);
-    let options = new RequestOptions({headers: headers});
-
-
+    this.setRequestOptions();
+    if (newDemand.id !== null) {
+      console.log("requesting deletion of old demand...");
+      this.delete(newDemand.id);
+    }
+    console.log("new Demand: ");
     console.log(newDemand);
-    console.log("an:" + this.baseUrl + 'demand');
 
-    this.http.post(this.baseUrl + 'demand', newDemand, options)
+    this.http.post(this.baseUrl + 'demand', newDemand, this.options)
+      .subscribe(data => {
+          console.log(data['_body']);
+        },
+        error => {
+          console.log(error);
+        });
+  }
+
+  delete(id) {
+    this.setRequestOptions();
+    this.http.delete(this.baseUrl + 'demand/' + id, this.options)
       .subscribe(data => {
           console.log(data['_body']);
         },

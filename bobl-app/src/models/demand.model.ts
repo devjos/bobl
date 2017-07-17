@@ -2,11 +2,11 @@ export class Demand {
   id : number;
   title : string;
   source : string;
-  sourceLatitude : number;
-  sourceLongitude : number;
+  sourceLatitude : string;
+  sourceLongitude : string;
   destination : string;
-  destinationLatitude : number;
-  destinationLongitude : number;
+  destinationLatitude : string;
+  destinationLongitude : string;
   //type : "permanent";
   outboundTime : string;
   waybackTime : string;

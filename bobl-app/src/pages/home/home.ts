@@ -8,7 +8,6 @@ import {AuthService} from '../../providers/auth.service';
 
 import {AddPage} from '../add/add';
 import {GPSTrackingPage} from '../gpsTracking/gpsTracking';
-import {delay} from "rxjs/operator/delay";
 
 @Component({
   selector: 'page-home',
@@ -37,7 +36,8 @@ export class HomePage {
       console.log('call demand service');
       inner.demandsService.getDemands().subscribe(demands => {
         inner.demands = demands;
-        console.log("demands: "+ demands);
+        console.log("demands: ");
+        console.log(demands);
 
         if (inner.demands.length === 0) {
           inner.demands = inner.demandsService.getDummyDemand();

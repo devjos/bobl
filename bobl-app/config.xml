@@ -3,7 +3,7 @@
     <name>BOBL-App</name>
     <description>BOBL - Bedarfsorientierte Buslinien</description>
     <author email="bobl@feido.de" href="http://in.tum.de/">BOBL Team</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://192.168.178.36:8100" />
     <access origin="*" />
     <allow-navigation href="http://ionic.local/*" />
     <allow-navigation href="http://192.168.178.36:8100" />
@@ -85,7 +85,7 @@
     <engine name="ios" spec="^4.4.0" />
     <plugin name="cordova-plugin-console" spec="^1.0.5" />
     <plugin name="cordova-plugin-device" spec="^1.1.4" />
-    <plugin name="cordova-plugin-file" spec="~4.3.3" />
+    <plugin name="cordova-plugin-file" spec="^4.3.3" />
     <plugin name="cordova-plugin-geolocation" spec="^2.4.3">
         <variable name="GEOLOCATION_USAGE_DESCRIPTION" value=" " />
     </plugin>
@@ -99,5 +99,4 @@
     <plugin name="cordova-plugin-whitelist" spec="^1.3.1" />
     <plugin name="cordova-sqlite-storage" spec="~2.0.4" />
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
-    <plugin name="cordova-sqlite-storage" spec="^2.0.4" />
 </widget>

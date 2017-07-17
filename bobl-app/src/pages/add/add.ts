@@ -4,6 +4,7 @@ import {DemandsService} from '../../providers/demands.service';
 import {Demand} from '../../models/demand.model';
 import {NativeGeocoder, NativeGeocoderForwardResult} from '@ionic-native/native-geocoder';
 import {AlertController} from 'ionic-angular';
+import {fn} from "@angular/compiler/src/output/output_ast";
 
 @Component({
   selector: 'page-add',
@@ -21,7 +22,7 @@ export class AddPage implements OnInit {
   demand: Demand;
   demandTest: Demand;
   id: number;
-  //geocodeOutput: any;
+  isNewDemand: boolean;
 
   testCheckboxOpen = false;
 
@@ -30,15 +31,18 @@ export class AddPage implements OnInit {
     console.log(this.navParams.get("demandPass"));
     if (this.navParams.get("demandPass") === undefined) {
       console.log("no demand passed");
+
+      this.isNewDemand = true;
+
       this.demand = {
         "id": null,
         "title": "",
         "source": "",
-        "sourceLatitude": null,
-        "sourceLongitude": null,
+        "sourceLatitude": "",
+        "sourceLongitude": "",
         "destination": "",
-        "destinationLatitude": null,
-        "destinationLongitude": null,
+        "destinationLatitude": "",
+        "destinationLongitude": "",
         //"type" : "permanent",
         "outboundTime": "",
         "waybackTime": null,
@@ -46,45 +50,56 @@ export class AddPage implements OnInit {
       };
     }
     else {
-      this.demand = this.navParams.get("demandPass");
       console.log("got demand: " + this.demand);
+      this.isNewDemand = false;
+      this.demand = this.navParams.get("demandPass");
     }
-
-    //test demand
-    this.demandTest = {
-      "id": null,
-      "title": "test",
-      "source": "Garching",
-      "sourceLatitude": 48.135125,
-      "sourceLongitude": 11.581981,
-      "destination": "Neufinsing",
-      "destinationLatitude": 52.520007,
-      "destinationLongitude": 13.404954,
-      //"type" : "permanent",
-      "outboundTime": "01:00",
-      "waybackTime": "08:00",
-      "weekdays": [0, 0, 1, 0, 0, 1, 1]
-    };
   }
 
   addDemand() {
+    this.nativeGeocoder.forwardGeocode(this.demand.source)
+      .then((coordinates: NativeGeocoderForwardResult) => {
+        console.log(
+          'The coordinates are latitude=' + coordinates.latitude
+          + ' and longitude=' + coordinates.longitude);
+        this.demand.sourceLatitude = coordinates.latitude;
+        this.demand.sourceLongitude = coordinates.longitude;
+      })
+      .catch((error: any) => console.log(error));
 
-    //change demandTest to demand when ready.
-    console.log("demandTest: ");
-    console.log(this.demandTest);
-
-    this.getLocation(this.demand.source);
-    this.getLocation(this.demand.destination);
-
+    this.nativeGeocoder.forwardGeocode(this.demand.destination)
+      .then((coordinates: NativeGeocoderForwardResult) => {
+        console.log(
+          'The coordinates are latitude=' + coordinates.latitude
+          + ' and longitude=' + coordinates.longitude);
+        this.demand.destinationLatitude = coordinates.latitude;
+        this.demand.destinationLongitude = coordinates.longitude;
+      })
+      .catch((error: any) => console.log(error));
+    
     console.log("demand: ");
     console.log(this.demand);
-    this.demandsService.create(this.demandTest);
+    this.demandsService.create(this.demand);
+
+    this.navCtrl.pop();
   }
 
-  getLocation(location: string) {
+
+  deleteDemand() {
+    this.demandsService.delete(this.demand.id);
+
+    this.navCtrl.pop();
+  }
+
+  getLocation(location: string, latitude: string, longitude: string) {
     this.nativeGeocoder.forwardGeocode(location)
-      .then((coordinates: NativeGeocoderForwardResult) => console.log('The coordinates are latitude='
-        + coordinates.latitude + ' and longitude=' + coordinates.longitude))
+      .then((coordinates: NativeGeocoderForwardResult) => {
+        console.log(
+          'The coordinates are latitude=' + coordinates.latitude
+          + ' and longitude=' + coordinates.longitude);
+        latitude = coordinates.latitude;
+        longitude = coordinates.longitude;
+      })
       .catch((error: any) => console.log(error));
   }
 
