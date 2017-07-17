@@ -35,12 +35,16 @@ public class AuthFilter implements ContainerRequestFilter {
     String method = request.getMethod();
     String path = request.getUriInfo().getPath(true);
 
-    if (method.equals("POST") && (path.equals("signup") || path.equals("login"))) {
+    if (method.equals("OPTIONS")) {
+      log.debug("OPTIONS, no auth");
+      return;
+    }
+    if (method.equals("POST") && ((path.equals("signup") || path.equals("login")))) {
       log.debug("Signup and login, will skip authentication.");
       return;
     }
 
-    String c = request.getHeaderString("bobl-cookie");
+    String c = request.getHeaderString("x-bobl-cookie");
     if (c != null && !c.isEmpty()) {
       SessionToken token = SessionToken.fromCookie(Cookie.valueOf(c));
 

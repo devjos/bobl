@@ -20,6 +20,7 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 
+import de.tum.CookieJson;
 import de.tum.Main;
 import de.tum.ServerConfig;
 import de.tum.model.Credentials;
@@ -65,7 +66,9 @@ public class LoginResourceTest {
         .post(Entity.entity(new Gson().toJson(creds), MediaType.APPLICATION_JSON));
     assertEquals(200, response.getStatus());
 
-    Cookie c = Cookie.valueOf(response.getHeaderString("bobl-cookie"));
+    String content = response.readEntity(String.class);
+    CookieJson cJson = new Gson().fromJson(content, CookieJson.class);
+    Cookie c = Cookie.valueOf(cJson.getCookie());
     assertNotNull(c);
     SessionToken token = SessionToken.fromCookie(c);
     assertTrue(token.getToken().matches("[a-zA-Z0-9]+"));

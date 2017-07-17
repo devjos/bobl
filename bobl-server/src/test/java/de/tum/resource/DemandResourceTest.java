@@ -68,10 +68,11 @@ public class DemandResourceTest {
     Demand d = new Demand("Title", "source", "3.4567", "5.6737", "destination", "5.678", "1.2345",
         "11:30", "15:00", weekdays);
     Response response = target.path("demand").request()
-        .header("bobl-cookie", token.toCookieString()).post(Entity.json(new Gson().toJson(d)));
+        .header("x-bobl-cookie", token.toCookieString()).post(Entity.json(new Gson().toJson(d)));
     assertEquals(204, response.getStatus());
 
-    response = target.path("demand").request().header("bobl-cookie", token.toCookieString()).get();
+    response =
+        target.path("demand").request().header("x-bobl-cookie", token.toCookieString()).get();
     assertEquals(200, response.getStatus());
 
     String demands = response.readEntity(String.class);
@@ -109,7 +110,7 @@ public class DemandResourceTest {
     SessionToken token = db.login(creds);
 
     Response response =
-        target.path("demand").request().header("bobl-cookie", token.toCookieString()).post(null);
+        target.path("demand").request().header("x-bobl-cookie", token.toCookieString()).post(null);
     assertEquals(400, response.getStatus());
   }
 
@@ -127,7 +128,7 @@ public class DemandResourceTest {
     d = c.iterator().next();
 
     Response response = target.path("demand/" + d.getID()).request()
-        .header("bobl-cookie", token.toCookieString()).delete();
+        .header("x-bobl-cookie", token.toCookieString()).delete();
     assertEquals(204, response.getStatus());
 
     c = db.getDemands(creds.getUser());
