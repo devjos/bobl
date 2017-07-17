@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {NavController} from 'ionic-angular';
+import {NavController, NavParams} from 'ionic-angular';
 import {DemandsService} from '../../providers/demands.service';
 import {Demand} from '../../models/demand.model';
 import {NativeGeocoder, NativeGeocoderForwardResult} from '@ionic-native/native-geocoder';
@@ -12,6 +12,7 @@ import {AlertController} from 'ionic-angular';
 export class AddPage implements OnInit {
 
   constructor(public navCtrl: NavController,
+              public navParams: NavParams,
               private demandsService: DemandsService,
               private nativeGeocoder: NativeGeocoder,
               private alertController: AlertController) {
@@ -25,25 +26,33 @@ export class AddPage implements OnInit {
   testCheckboxOpen = false;
 
   ngOnInit() {
-
-    this.demand = {
-      "id": null,
-      "title": "",
-      "source": "",
-      "sourceLatitude": null,
-      "sourceLongitude": null,
-      "destination": "",
-      "destinationLatitude": null,
-      "destinationLongitude": null,
-      //"type" : "permanent",
-      "outboundTime": "",
-      "waybackTime": null,
-      "weekdays": [false, false, false, false, false, false, false]
-    };
+    console.log("navParams");
+    console.log(this.navParams.get("demandPass"));
+    if (this.navParams.get("demandPass") === undefined) {
+      console.log("no demand passed");
+      this.demand = {
+        "id": null,
+        "title": "",
+        "source": "",
+        "sourceLatitude": null,
+        "sourceLongitude": null,
+        "destination": "",
+        "destinationLatitude": null,
+        "destinationLongitude": null,
+        //"type" : "permanent",
+        "outboundTime": "",
+        "waybackTime": null,
+        "weekdays": [0, 0, 0, 0, 0, 0, 0]
+      };
+    }
+    else {
+      this.demand = this.navParams.get("demandPass");
+      console.log("got demand: " + this.demand);
+    }
 
     //test demand
     this.demandTest = {
-      "id": 22,
+      "id": null,
       "title": "test",
       "source": "Garching",
       "sourceLatitude": 48.135125,
@@ -52,9 +61,9 @@ export class AddPage implements OnInit {
       "destinationLatitude": 52.520007,
       "destinationLongitude": 13.404954,
       //"type" : "permanent",
-      "outboundTime": "01:00 PM",
-      "waybackTime": "08:00 PM",
-      "weekdays": [false, false, true, false, false, true, true]
+      "outboundTime": "01:00",
+      "waybackTime": "08:00",
+      "weekdays": [0, 0, 1, 0, 0, 1, 1]
     };
   }
 
@@ -132,10 +141,10 @@ export class AddPage implements OnInit {
         this.testCheckboxOpen = false;
         //reset
         for (let i in this.demand.weekdays) {
-          this.demand.weekdays[i] = false;
+          this.demand.weekdays[i] = 0;
         }
         for (let i in data) {
-          this.demand.weekdays[Number(data[i])] = true;
+          this.demand.weekdays[Number(data[i])] = 1;
         }
       }
     });

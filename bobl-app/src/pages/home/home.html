@@ -15,7 +15,7 @@
     <button ion-fab (click)="pushPage()"><ion-icon name="add"></ion-icon></button>
   </ion-fab>
 
-  <ion-card *ngFor="let demand of demands">
+  <ion-card *ngFor="let demand of demands" type="button" (click)="openDemand(demand)">
     <img src="assets/img/testcardimg.jpg"/>
     <div class="card-title"> {{demand.title}}</div>
     <div class="card-subtitle">
