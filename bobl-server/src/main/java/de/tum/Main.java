@@ -8,6 +8,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 
 import de.tum.filters.AuthFilter;
+import de.tum.filters.CORSFilter;
 import de.tum.filters.CorsRequestFilter;
 import de.tum.filters.LoggingFilter;
 import de.tum.model.DatabaseService;
@@ -42,7 +43,8 @@ public class Main {
     // in de.tum.in.net package
     final ResourceConfig rc = new ResourceConfig().register(new MyApplicationBinder(dbService))
         .packages(true, "de.tum.resource").register(LoggingFilter.class).register(AuthFilter.class)
-        .register(CorsRequestFilter.class).register(RolesAllowedDynamicFeature.class);
+        .register(CorsRequestFilter.class).register(CORSFilter.class)
+        .register(RolesAllowedDynamicFeature.class);
 
     rc.property("jersey.config.server.provider.packages",
         "org.glassfish.jersey.filter;de.tum.filters.AuthFilter");
