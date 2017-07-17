@@ -52,8 +52,8 @@ export class AddPage implements OnInit {
       "destinationLatitude": 52.520007,
       "destinationLongitude": 13.404954,
       //"type" : "permanent",
-      "outboundTime": "20:00",
-      "waybackTime": "08:00",
+      "outboundTime": "01:00 PM",
+      "waybackTime": "08:00 PM",
       "weekdays": [false, false, true, false, false, true, true]
     };
   }
