@@ -5,14 +5,14 @@ from ClusterTools import computeWeightMatrix, connectBuslines
 from ClusterTools import BusLineClustering,BusStopClustering,TimeClustering
 from datetime import datetime
 from OSM import routeToGpx
-from TSM import perform_tsm
+#from TSM import perform_tsm
 import os
 import json
 
 def runAlgorithm(day,c_time,c_stop,c_lines):
     # load data
     my_data_indices = range(len(getData()))
-
+    my_data_indices = [i for i in my_data_indices if getData()[i][2].weekday() == day]
     # cluster by time
     t_c = TimeClustering(indices=my_data_indices,n_clusters=c_time)
     t_c.run_clustering()
