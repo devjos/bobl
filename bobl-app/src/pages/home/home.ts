@@ -1,56 +1,60 @@
-import { Component, OnInit } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import {Component} from '@angular/core';
+import {NavController} from 'ionic-angular';
 
-import { DemandsService } from '../../providers/demands.service';
-import { Demand } from '../../models/demand.model';
+import {DemandsService} from '../../providers/demands.service';
+import {Demand} from '../../models/demand.model';
 
-import { AuthService } from '../../providers/auth.service';
+import {AuthService} from '../../providers/auth.service';
 
-import { AddPage } from '../add/add';
-import { GPSTrackingPage } from '../gpsTracking/gpsTracking';
+import {AddPage} from '../add/add';
+import {GPSTrackingPage} from '../gpsTracking/gpsTracking';
+import {delay} from "rxjs/operator/delay";
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
-export class HomePage implements OnInit {
-  demands: Demand[] = [];
+export class HomePage {
+  demands: Demand[];
   gpsTracking = GPSTrackingPage;
 
   constructor(public navCtrl: NavController, private demandsService: DemandsService, private authService: AuthService) {
 
   }
 
-  ngOnInit() {
+  ionViewDidLoad() {
     //for testing
-    let testUser = {
-      user : "83",
-      password : "ler5a34r1nuh"
-    };
-    this.authService.newUser(testUser);
+    /*
+     let testUser = {
+     user : "83",
+     password : "ler5a34r1nuh"
+     };
+     this.authService.newUser(testUser);
+     */
+    //this.authService.deleteUser();
 
-    if (this.authService.getCurrentUser().user === "") {
-      this.authService.signup();
-      console.log("signup");
-    }
-    else {
-      this.authService.login();
-      console.log("login");
-    }
+
+
   }
-
   pushPage() {
     this.navCtrl.push(AddPage);
   }
 
   ionViewDidEnter() {
+    let inner = this;
     console.log("view neu geladen");
+    this.authService.authenticate(function (){
+      console.log('call demand service');
+      inner.demandsService.getDemands().subscribe(demands => {
+        inner.demands = demands;
+        console.log("demands: "+ demands);
 
-    this.demandsService.getDemands().subscribe(demands => {
-      this.demands = demands;
+        if (inner.demands.length === 0) {
+          inner.demands = inner.demandsService.getDummyDemand();
+        }
+      });
     });
-
+    this.demands = inner.demands;
     console.log(this.demands);
   }
-
 }

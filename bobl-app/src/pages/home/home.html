@@ -19,10 +19,10 @@
     <img src="assets/img/testcardimg.jpg"/>
     <div class="card-title"> {{demand.title}}</div>
     <div class="card-subtitle">
-      {{demand.src}}
+      {{demand.source}}
       <ion-icon *ngIf="demand.direction=='oneway'" name="arrow-round-forward"></ion-icon>
       <ion-icon *ngIf="demand.direction=='roundtrip'" name="swap"></ion-icon>
-      {{demand.dst}}
+      {{demand.destination}}
     </div>
   </ion-card>
 

@@ -19,8 +19,6 @@
         <ion-label color="primary" floating>Wohin möchten Sie fahren?</ion-label>
         <ion-input type="text" [(ngModel)]="demand.destination" name="destination"></ion-input>
       </ion-item>
-
-      <ion-item-divider></ion-item-divider>
       <!--
             <ion-item>
               <ion-label>Art des Bedarfs</ion-label>
@@ -30,26 +28,17 @@
         </ion-select>
       </ion-item>
       -->
-
-      <ion-grid>
-        <ion-label>Wochentage</ion-label>
-        <!--
-        <ion-row>
-          <ion-checkbox [(ngModel)]="Mo" name="Mo"></ion-checkbox>
-          <ion-checkbox [(ngModel)]="Di"></ion-checkbox>
-          <ion-checkbox [(ngModel)]="Mi"></ion-checkbox>
-          <ion-checkbox [(ngModel)]="Do"></ion-checkbox>
-          <ion-checkbox [(ngModel)]="Fr"></ion-checkbox>
-          <ion-checkbox [(ngModel)]="Sa"></ion-checkbox>
-          <ion-checkbox [(ngModel)]="So"></ion-checkbox>
-        </ion-row>
-        -->
-      </ion-grid>
-
-
+      <ion-item>
+        <button ion-button color="light" block (click)="doCheckbox()">Wochentage</button>
+      </ion-item>
       <ion-item>
         <ion-label>Ankunftszeit</ion-label>
         <ion-datetime displayFormat="hh:mm A" pickerFormat = "hh mm A" [(ngModel)]="demand.outboundTime" name="outboundTime"></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Rückfahrt</ion-label>
+        <ion-datetime displayFormat="HH:mm" [(ngModel)]="demand.waybackTime" name="waybackTime"></ion-datetime>
       </ion-item>
 
       <ion-item>

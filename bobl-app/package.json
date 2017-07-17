@@ -1,17 +1,17 @@
 {
-    "name": "bobl-app",
-    "version": "0.0.1",
-    "author": "Johannes Schleger",
-    "homepage": "http://www.in.tum.de",
-    "private": true,
-    "scripts": {
-        "clean": "ionic-app-scripts clean",
-        "build": "ionic-app-scripts build",
-        "lint": "ionic-app-scripts lint",
-        "ionic:build": "ionic-app-scripts build",
-        "ionic:serve": "ionic-app-scripts serve"
-    },
-    "dependencies": {
+  "name": "bobl-app",
+  "version": "0.0.1",
+  "author": "Johannes Schleger",
+  "homepage": "http://www.in.tum.de",
+  "private": true,
+  "scripts": {
+    "clean": "ionic-app-scripts clean",
+    "build": "ionic-app-scripts build",
+    "lint": "ionic-app-scripts lint",
+    "ionic:build": "ionic-app-scripts build",
+    "ionic:serve": "ionic-app-scripts serve"
+  },
+   "dependencies": {
         "@angular/common": "4.1.2",
         "@angular/compiler": "4.1.2",
         "@angular/compiler-cli": "4.1.2",
@@ -73,7 +73,8 @@
                 "CONTENT_AUTHORITY": "$PACKAGE_NAME"
             },
             "cordova-plugin-splashscreen": {},
-            "cordova-plugin-nativegeocoder": {}
+            "cordova-plugin-nativegeocoder": {},
+            "cordova-sqlite-storage": {}
         },
         "platforms": [
             "android",
