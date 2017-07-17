@@ -3,6 +3,8 @@ import { HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
+import { IonicStorageModule } from '@ionic/storage';
+import { File } from '@ionic-native/file';
 
 import { AddPage } from '../pages/add/add';
 import { GPSTrackingPage } from '../pages/gpsTracking/gpsTracking';
@@ -31,8 +33,8 @@ import {IonicStorageModule} from "@ionic/storage";
   imports: [
     BrowserModule,
     HttpModule,
-    IonicStorageModule.forRoot(),
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -52,6 +54,7 @@ import {IonicStorageModule} from "@ionic/storage";
     LocationTrackerProvider,
     BackgroundGeolocation,
     Geolocation,
+    File,
     NativeGeocoder
   ]
 })

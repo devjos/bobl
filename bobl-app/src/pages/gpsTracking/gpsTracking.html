@@ -10,7 +10,7 @@
   <ion-list>
     <ion-item>
       <ion-label>GPS-Tracking</ion-label>
-      <ion-toggle [(ngModel)] = "toggle" (ionChange)="start()" checked = false></ion-toggle>
+      <ion-toggle [(ngModel)] = "toggle" (ionChange)="start()" [checked] = isChecked()></ion-toggle>
     </ion-item>
   </ion-list>
   <div [hidden]= "!(isChecked())">
