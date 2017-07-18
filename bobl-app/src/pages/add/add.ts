@@ -4,7 +4,6 @@ import {DemandsService} from '../../providers/demands.service';
 import {Demand} from '../../models/demand.model';
 import {NativeGeocoder, NativeGeocoderForwardResult} from '@ionic-native/native-geocoder';
 import {AlertController} from 'ionic-angular';
-import {fn} from "@angular/compiler/src/output/output_ast";
 
 @Component({
   selector: 'page-add',
@@ -56,34 +55,38 @@ export class AddPage implements OnInit {
     }
   }
 
-  addDemand() {
+  addDemandAsync() {
+    let inner = this;
+    this.addDemand(function () {
+      console.log("addDemandAsync: ");
+      console.log(inner.demand);
+      inner.demandsService.create(inner.demand);
+      inner.navCtrl.pop();
+    })
+  }
+
+  addDemand(fn) {
     this.nativeGeocoder.forwardGeocode(this.demand.source)
       .then((coordinates: NativeGeocoderForwardResult) => {
         console.log(
           'The coordinates are latitude=' + coordinates.latitude
           + ' and longitude=' + coordinates.longitude);
-        this.demand.sourceLatitude = coordinates.latitude;
-        this.demand.sourceLongitude = coordinates.longitude;
+        this.demand.sourceLatitude = parseFloat(coordinates.latitude).toFixed(6);
+        this.demand.sourceLongitude = parseFloat(coordinates.longitude).toFixed(6);
+
+        this.nativeGeocoder.forwardGeocode(this.demand.destination)
+          .then((coordinates: NativeGeocoderForwardResult) => {
+            console.log(
+              'The coordinates are latitude=' + coordinates.latitude
+              + ' and longitude=' + coordinates.longitude);
+            this.demand.destinationLatitude = parseFloat(coordinates.latitude).toFixed(6);
+            this.demand.destinationLongitude = parseFloat(coordinates.longitude).toFixed(6);
+            fn();
+          })
+          .catch((error: any) => console.log(error));
       })
       .catch((error: any) => console.log(error));
-
-    this.nativeGeocoder.forwardGeocode(this.demand.destination)
-      .then((coordinates: NativeGeocoderForwardResult) => {
-        console.log(
-          'The coordinates are latitude=' + coordinates.latitude
-          + ' and longitude=' + coordinates.longitude);
-        this.demand.destinationLatitude = coordinates.latitude;
-        this.demand.destinationLongitude = coordinates.longitude;
-      })
-      .catch((error: any) => console.log(error));
-    
-    console.log("demand: ");
-    console.log(this.demand);
-    this.demandsService.create(this.demand);
-
-    this.navCtrl.pop();
   }
-
 
   deleteDemand() {
     this.demandsService.delete(this.demand.id);
