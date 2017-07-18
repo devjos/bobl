@@ -22,20 +22,10 @@ export class HomePage {
 
   }
 
-  ionViewDidLoad() {
-    //for testing
-    /*
-     let testUser = {
-     user : "83",
-     password : "ler5a34r1nuh"
-     };
-     this.authService.newUser(testUser);
-     */
-    //this.authService.deleteUser();
-
-
-
+  openDemand(demandPass: Demand) {
+    this.navCtrl.push(AddPage, { demandPass: demandPass });
   }
+
   pushPage() {
     this.navCtrl.push(AddPage);
   }

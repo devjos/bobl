@@ -125,6 +125,7 @@ export class AuthService {
           console.log(data['_body']);
           console.log('setze cookie');
           this.boblCookie = (JSON.parse(data['_body']));
+          console.log(this.boblCookie);
           fn();
         },
         error => {

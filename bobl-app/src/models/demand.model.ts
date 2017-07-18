@@ -10,5 +10,5 @@ export class Demand {
   //type : "permanent";
   outboundTime : string;
   waybackTime : string;
-  weekdays : Array<boolean>;
+  weekdays : Array<number>; //[0,1] allowed
 }

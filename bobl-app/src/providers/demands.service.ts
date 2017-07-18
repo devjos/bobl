@@ -24,7 +24,7 @@ export class DemandsService {
       //"type" : "permanent",
       "outboundTime": "",
       "waybackTime": "",
-      "weekdays": [false, false, false, false, false, false, false]
+      "weekdays": [0, 0, 0, 0, 0, 0, 0]
     };
   dummyDemands: Array<Demand> = [this.dummyDemand];
 
