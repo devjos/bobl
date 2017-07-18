@@ -24,3 +24,25 @@ $ ionic cordova run ios
 
 Substitute ios for android if not on a Mac.
 
+
+## Debugging
+### run in browser
+```bash
+npm install
+ionic serve
+```
+
+### run in emulator
+* open chrome://inspect/#devices
+```bash
+cordova ionic emulate android
+```
+* select cordova emulator
+
+
+### run on device
+* open chrome://inspect/#devices
+```bash
+cordova ionic run android
+```
+* select your device
