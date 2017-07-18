@@ -34,15 +34,19 @@ ionic serve
 
 ### run in emulator
 * open chrome://inspect/#devices
+
 ```bash
 cordova ionic emulate android
 ```
+
 * select cordova emulator
 
 
 ### run on device
 * open chrome://inspect/#devices
+
 ```bash
 cordova ionic run android
 ```
+
 * select your device
