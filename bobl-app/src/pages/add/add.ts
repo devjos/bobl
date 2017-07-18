@@ -71,16 +71,16 @@ export class AddPage implements OnInit {
         console.log(
           'The coordinates are latitude=' + coordinates.latitude
           + ' and longitude=' + coordinates.longitude);
-        this.demand.sourceLatitude = coordinates.latitude.toString();
-        this.demand.sourceLongitude = coordinates.longitude.toString();
+        this.demand.sourceLatitude = parseFloat(coordinates.latitude).toFixed(6);
+        this.demand.sourceLongitude = parseFloat(coordinates.longitude).toFixed(6);
 
         this.nativeGeocoder.forwardGeocode(this.demand.destination)
           .then((coordinates: NativeGeocoderForwardResult) => {
             console.log(
               'The coordinates are latitude=' + coordinates.latitude
               + ' and longitude=' + coordinates.longitude);
-            this.demand.destinationLatitude = coordinates.latitude.toString();
-            this.demand.destinationLongitude = coordinates.longitude.toString();
+            this.demand.destinationLatitude = parseFloat(coordinates.latitude).toFixed(6);
+            this.demand.destinationLongitude = parseFloat(coordinates.longitude).toFixed(6);
             fn();
           })
           .catch((error: any) => console.log(error));
