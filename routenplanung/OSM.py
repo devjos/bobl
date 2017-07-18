@@ -1,9 +1,8 @@
-from numba import jit
+#from numba import jit
 
 from pyroutelib2.loadOsm import LoadOsm
 from pyroutelib2.route import Router
 
-@jit(locals=locals())
 def getGPXRouteFromTo(lat1, lon1, lat2, lon2):
     data = LoadOsm('car')
     node1 = data.findNode(lat1, lon1)
@@ -23,7 +22,7 @@ def getGPXRouteFromTo(lat1, lon1, lat2, lon2):
         distance_all += router.haversine(route[i], route[i + 1])
 
     return route, distance_all
-@jit
+
 def routeToGpx(list_nodes):
     """Format a route (as list of nodes) into a GPX file"""
     output = ''

@@ -5,7 +5,7 @@ from ClusterTools import computeWeightMatrix, connectBuslines
 from ClusterTools import BusLineClustering,BusStopClustering,TimeClustering
 from datetime import datetime
 from OSM import routeToGpx
-#from TSM import perform_tsm
+from TSM import perform_tsm
 import os
 import json
 

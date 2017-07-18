@@ -1,4 +1,4 @@
-from numba import jit
+#from numba import jit
 from sklearn.cluster import KMeans
 import numpy as np
 import utm
