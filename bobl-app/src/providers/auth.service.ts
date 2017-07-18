@@ -27,7 +27,6 @@ export class AuthService {
   }
 
   authenticate(fn) {
-
     this.storage.get('user-user').then(u => {
       this.storage.get('user-password').then(pw => {
         this.user.user = u;
