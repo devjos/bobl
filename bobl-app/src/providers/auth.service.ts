@@ -30,10 +30,11 @@ export class AuthService {
 
     this.storage.get('user-user').then(u => {
       this.storage.get('user-password').then(pw => {
-        console.log("Pre login Current user: " + this.getCurrentUser().user + " "
-          + this.getCurrentUser().password);
         this.user.user = u;
         this.user.password = pw;
+
+        console.log("Pre login Current user: " + this.getCurrentUser().user + " "
+          + this.getCurrentUser().password);
 
         if (!this.isAuthenticated()) {
           this.signup();
@@ -56,18 +57,6 @@ export class AuthService {
   getBoblCookie() {
     return this.boblCookie;
   }
-
-  /*
-   getBoblCookie(): Observable<string> {
-   return new Observable(observer => {
-   this.storage.get('bobl-cookie').then(value => {
-   observer.next(value);
-   observer.complete();
-   })
-   });
-
-   }
-   */
 
   deleteUser() {
     this.storage.set('user-user', '');
@@ -108,6 +97,7 @@ export class AuthService {
   signup() {
     this.http.post(this.baseUrl + 'signup', "")
       .subscribe(data => {
+          console.log("new user: ");
           console.log(JSON.parse(data['_body']));
           this.newUser(JSON.parse(data['_body']));
         },
@@ -135,7 +125,7 @@ export class AuthService {
   }
 
   isAuthenticated() {
-    if (this.user.user !== "") {
+    if (this.user.user != null) {
       return true
     }
     else {

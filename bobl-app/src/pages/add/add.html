@@ -29,7 +29,7 @@
       </ion-item>
       -->
       <ion-item>
-        <button ion-button color="light" block (click)="doCheckbox()">Wochentage</button>
+        <span ion-button color="light" full type="button" (click)="doCheckbox()">Wochentage</span>
       </ion-item>
       <ion-item>
         <ion-label>Ankunftszeit</ion-label>
@@ -47,7 +47,8 @@
       </ion-item>
 
     </ion-list>
-
+    <span ion-button full type="button" [hidden]="isNewDemand" (click)="deleteDemand()" color="danger">Löschen</span>
     <button ion-button full type="submit">Speichern</button>
   </form>
+
 </ion-content>
